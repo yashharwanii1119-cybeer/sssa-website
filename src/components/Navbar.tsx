@@ -27,7 +27,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
     { name: 'About Us', href: '#about' },
     { name: 'Our Collections', href: '#collections' },
     { name: 'Craftsmanship', href: '#craftsmanship' },
-    { name: 'Manufacturing', href: '#manufacturing' },
     { name: 'Why Us', href: '#why-us' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -64,11 +63,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art"
-                className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                className="h-11 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
               />
             </a>
 
-            <div className="hidden lg:flex items-center space-x-7">
+            <div className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link) => (
                 <a
                   key={link.name}

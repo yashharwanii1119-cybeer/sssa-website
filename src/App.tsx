@@ -5,7 +5,6 @@ import { About } from './components/About';
 import { Collections } from './components/Collections';
 import { FeaturedProducts } from './components/FeaturedProducts';
 import { Craftsmanship } from './components/Craftsmanship';
-import { Manufacturing } from './components/Manufacturing';
 import { WhyChooseUs } from './components/WhyChooseUs';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
@@ -44,7 +43,6 @@ export function App() {
           onViewProductModal={(prod) => setSelectedProduct(prod)}
         />
         <Craftsmanship />
-        <Manufacturing />
         <WhyChooseUs />
         <Contact initialSubject={enquiryInitialSubject} />
       </main>

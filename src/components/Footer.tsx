@@ -16,7 +16,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
     { name: 'About Us', href: '#about' },
     { name: 'Our Collections', href: '#collections' },
     { name: 'Craftsmanship', href: '#craftsmanship' },
-    { name: 'Manufacturing', href: '#manufacturing' },
     { name: 'Why Choose Us', href: '#why-us' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -42,7 +41,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art"
-                className="h-12 w-auto object-contain"
+                className="h-13 sm:h-15 w-auto object-contain"
               />
             </div>
             
@@ -107,7 +106,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
               </div>
               <div className="flex items-start gap-2.5">
                 <Globe className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
-                <span>Manufacturing &amp; Export Services</span>
+                <span>Export &amp; Trade Inquiries</span>
               </div>
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
