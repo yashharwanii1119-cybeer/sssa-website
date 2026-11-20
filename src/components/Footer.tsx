@@ -3,6 +3,7 @@ import { ArrowUp, Mail, MapPin, Globe, Shield, Sparkles } from 'lucide-react';
 import logoLight from '../assets/logo/sssa_logo_light.png';
 import { collectionsData } from '../data/collections';
 import { openWhatsAppEnquiry } from '../utils/whatsapp';
+import { getAssetPath } from '../utils/paths';
 
 interface FooterProps {
   onOpenEnquiry?: (subject?: string) => void;
@@ -153,6 +154,70 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
           </div>
 
+        </div>
+
+        {/* Dedicated Sustainability & Responsible Sourcing Area */}
+        <div className="py-10 border-b border-[#A77B42]/20">
+          <div className="bg-[#1f130d] border border-[#A77B42]/30 p-6 sm:p-8 lg:p-10">
+            <div className="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8">
+              
+              {/* Text & Compliance Content */}
+              <div className="flex-1 space-y-3 text-center lg:text-left">
+                <div className="inline-flex items-center gap-2">
+                  <span className="w-5 h-[1.5px] bg-[#C4975C]"></span>
+                  <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.25em] text-[#C4975C] uppercase">
+                    Ethical Forestry &amp; Global Compliance
+                  </span>
+                </div>
+
+                <h4 className="text-lg sm:text-xl font-serif text-white tracking-wide">
+                  SUSTAINABILITY &amp; RESPONSIBLE SOURCING
+                </h4>
+
+                <p className="text-xs sm:text-sm text-[#EAE0D2]/80 font-light leading-relaxed max-w-3xl">
+                  Committed to responsible wood sourcing, legally procured timber, sustainable forestry practices and EUDR compliance. We strive to support transparent and responsible supply chains while preserving the art of traditional woodworking.
+                </p>
+
+                <div className="pt-1">
+                  <span className="inline-block text-xs sm:text-[13px] font-medium tracking-wider text-[#C4975C] uppercase bg-[#271911] border border-[#A77B42]/40 px-3.5 py-1.5">
+                    Responsible Wood Sourcing &nbsp;|&nbsp; FSC &nbsp;|&nbsp; EUDR Compliance
+                  </span>
+                </div>
+              </div>
+
+              {/* Verified Logos Display */}
+              <div className="shrink-0 flex items-center justify-center gap-4 sm:gap-6">
+                {/* Logo 1: Riksh - Legally Procured Wood */}
+                <div className="flex flex-col items-center">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#F7F3EC] rounded-xl p-2 flex items-center justify-center shadow-lg border border-[#A77B42]/30 transition-transform duration-300 hover:scale-105">
+                    <img
+                      src={getAssetPath('/images/cert_vriksh.png')}
+                      alt="Made From Legally Procured Wood - Vriksh"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span className="text-[10px] text-[#EAE0D2]/70 font-medium tracking-wider uppercase mt-2">
+                    Vriksh Certified
+                  </span>
+                </div>
+
+                {/* Logo 2: FSC */}
+                <div className="flex flex-col items-center">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#F7F3EC] rounded-xl p-2 flex items-center justify-center shadow-lg border border-[#A77B42]/30 transition-transform duration-300 hover:scale-105">
+                    <img
+                      src={getAssetPath('/images/cert_fsc.png')}
+                      alt="FSC - Forest Stewardship Council"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span className="text-[10px] text-[#EAE0D2]/70 font-medium tracking-wider uppercase mt-2">
+                    FSC Standard
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
 
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#EAE0D2]/60">
