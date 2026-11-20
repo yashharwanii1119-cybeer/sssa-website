@@ -31,7 +31,8 @@ export const Collections: React.FC<CollectionsProps> = ({ onSelectCollection }) 
           {collectionsData.map((item) => (
             <div
               key={item.id}
-              className="group relative bg-[#F7F3EC] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-[#EAE0D2] flex flex-col justify-between"
+              id={`collection-${item.id}`}
+              className="group relative bg-[#F7F3EC] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-[#EAE0D2] flex flex-col justify-between scroll-mt-28"
             >
               <div className="relative h-72 sm:h-80 overflow-hidden bg-black/5">
                 <img

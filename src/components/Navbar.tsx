@@ -13,6 +13,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   const [collectionsDropdownOpen, setCollectionsDropdownOpen] = useState(false);
   const [mobileCollectionsOpen, setMobileCollectionsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +27,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Safe dropdown hover handlers with slight delay to prevent abrupt closing
+  const handleMouseEnter = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setCollectionsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    closeTimeoutRef.current = setTimeout(() => {
+      setCollectionsDropdownOpen(false);
+    }, 150);
+  };
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,7 +50,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -124,51 +145,59 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                 <div
                   className="relative"
                   ref={dropdownRef}
-                  onMouseEnter={() => setCollectionsDropdownOpen(true)}
-                  onMouseLeave={() => setCollectionsDropdownOpen(false)}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <a
                     href="#collections"
                     className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-1.5 xl:gap-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-                    onClick={() => setCollectionsDropdownOpen(false)}
+                    onClick={() => setCollectionsDropdownOpen((prev) => !prev)}
                   >
                     <span>Our Collections</span>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${collectionsDropdownOpen ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
                   </a>
 
-                  {/* Dropdown Menu */}
+                  {/* Dropdown Menu - 6 Categories with descriptions, subtle separators, spacious layout */}
                   {collectionsDropdownOpen && (
-                    <div className="absolute top-full left-0 pt-3 w-80 z-50 animate-fadeIn">
-                      <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none py-3 px-2 backdrop-blur-sm">
-                        <div className="px-3 pb-2 mb-2 border-b border-[#EAE0D2] text-[10px] uppercase font-bold tracking-widest text-[#A77B42]">
-                          Export &amp; Trade Collections
-                        </div>
-                        <div className="space-y-1">
+                    <div
+                      className="absolute top-full left-0 pt-3.5 w-[370px] z-50 animate-fadeIn"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none py-4 px-3 backdrop-blur-md">
+                        {/* 6 Category Items */}
+                        <div className="divide-y divide-[#EAE0D2]/70">
                           {collectionsData.map((cat) => (
                             <a
                               key={cat.id}
-                              href={`#collections`}
+                              href={`#collection-${cat.id}`}
                               onClick={() => setCollectionsDropdownOpen(false)}
-                              className="block px-3 py-2 rounded-none hover:bg-[#F3ECE1] transition-colors group/item"
+                              className="block py-3 px-3 hover:bg-[#F3ECE1]/80 transition-colors group/item rounded-none"
                             >
-                              <div className="text-xs font-semibold text-[#25221F] group-hover/item:text-[#A77B42] transition-colors flex items-center justify-between">
-                                <span>{cat.title}</span>
-                                <span className="text-[10px] text-[#A77B42] font-normal opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                              <div className="flex items-center justify-between">
+                                <span className="text-[14px] font-serif font-semibold tracking-wide text-[#25221F] group-hover/item:text-[#A77B42] transition-colors">
+                                  {cat.title}
+                                </span>
+                                <span className="text-[11px] text-[#A77B42] opacity-0 group-hover/item:opacity-100 group-hover/item:translate-x-0.5 transition-all">
+                                  →
+                                </span>
                               </div>
-                              <div className="text-[11px] text-[#7D6E63] line-clamp-1 mt-0.5 font-light">
-                                {cat.subtitle} • {cat.itemCount}
-                              </div>
+                              <p className="text-[11.5px] text-[#7D6E63] font-light mt-0.5 tracking-normal leading-snug">
+                                {cat.subtitle}
+                              </p>
                             </a>
                           ))}
                         </div>
-                        <div className="mt-2 pt-2 border-t border-[#EAE0D2] px-3">
+
+                        {/* Bottom Link: Explore All Collections */}
+                        <div className="mt-3 pt-3 border-t border-[#EAE0D2] px-3">
                           <a
                             href="#collections"
                             onClick={() => setCollectionsDropdownOpen(false)}
-                            className="text-[11px] font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between"
+                            className="text-[12px] uppercase tracking-wider font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between py-1 transition-colors"
                           >
                             <span>Explore All Collections</span>
-                            <ArrowUpRight className="w-3.5 h-3.5" />
+                            <ArrowUpRight className="w-4 h-4 text-[#A77B42]" />
                           </a>
                         </div>
                       </div>
@@ -253,17 +282,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileCollectionsOpen ? 'rotate-180 text-[#A77B42]' : ''}`} />
                 </button>
                 {mobileCollectionsOpen && (
-                  <div className="pl-4 pr-2 pb-2 space-y-1.5 bg-[#EAE0D2]/30 py-2 my-1">
+                  <div className="pl-3 pr-2 pb-2 divide-y divide-[#EAE0D2]/50 bg-[#EAE0D2]/30 my-1">
                     {collectionsData.map((cat) => (
                       <a
                         key={cat.id}
-                        href="#collections"
+                        href={`#collection-${cat.id}`}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block py-1.5 text-xs text-[#25221F] hover:text-[#A77B42] font-medium"
+                        className="block py-2.5 px-1 hover:text-[#A77B42] transition-colors"
                       >
-                        • {cat.title}
+                        <div className="text-xs font-serif font-semibold text-[#25221F]">
+                          • {cat.title}
+                        </div>
+                        <div className="text-[10.5px] text-[#7D6E63] font-light pl-3 mt-0.5">
+                          {cat.subtitle}
+                        </div>
                       </a>
                     ))}
+                    <div className="pt-2 px-1">
+                      <a
+                        href="#collections"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="text-xs font-semibold uppercase tracking-wider text-[#382419] flex items-center justify-between py-1"
+                      >
+                        <span>Explore All Collections</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>
