@@ -16,10 +16,9 @@ export function App() {
   });
 
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('sssa_admin_products');
-    return saved ? JSON.parse(saved) : initialProducts;
-  });
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [apiError, setApiError] = useState<string | null>(null);
 
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -27,6 +26,7 @@ export function App() {
   // Load live categories and live products from Neon backend on startup
   useEffect(() => {
     let isMounted = true;
+    setLoading(true);
 
     adminApiService
       .getCategories()
@@ -40,11 +40,28 @@ export function App() {
     adminApiService
       .getProducts({ limit: 100 })
       .then((data) => {
-        if (isMounted && data.products && data.products.length > 0) {
-          setProducts(data.products);
+        if (isMounted) {
+          if (data.products) {
+            setProducts(data.products);
+          }
+          setLoading(false);
         }
       })
-      .catch((err) => console.warn('Could not fetch products from API:', err));
+      .catch((err) => {
+        if (isMounted) {
+          console.warn('Could not fetch products from API, checking local backup:', err);
+          setApiError('Unable to connect to live database. Please check your connection.');
+          const saved = localStorage.getItem('sssa_admin_products');
+          if (saved) {
+            try {
+              setProducts(JSON.parse(saved));
+            } catch (e) {
+              setProducts([]);
+            }
+          }
+          setLoading(false);
+        }
+      });
 
     return () => {
       isMounted = false;
@@ -78,8 +95,9 @@ export function App() {
         // Create in database
         savedProduct = await adminApiService.createProduct(data);
       }
-    } catch (apiErr) {
-      console.warn('Backend API save error, updating local store:', apiErr);
+    } catch (apiErr: any) {
+      console.error('Backend API save error:', apiErr);
+      throw apiErr;
     }
 
     if (editingProduct) {
@@ -91,32 +109,10 @@ export function App() {
       );
       setProducts(updated);
     } else {
-      // Create local state fallback or enriched
-      const newProduct: Product = savedProduct || {
-        id: `prod-${Date.now()}`,
-        name: data.name || 'Untitled Product',
-        slug: data.name?.toLowerCase().replace(/\s+/g, '-') || `prod-${Date.now()}`,
-        sku: data.sku || `SSSA-${Math.floor(1000 + Math.random() * 9000)}`,
-        status: data.status || 'DRAFT',
-        isFeatured: data.isFeatured || false,
-        categoryId: data.categoryId || categories[0].id,
-        subcategoryId: data.subcategoryId || categories[0].subcategories[0].id,
-        shortDescription: data.shortDescription,
-        description: data.description,
-        material: data.material,
-        woodType: data.woodType,
-        finish: data.finish,
-        colour: data.colour,
-        dimensions: data.dimensions,
-        weight: data.weight,
-        customizationAvailable: data.customizationAvailable ?? true,
-        mainImage: data.mainImage || '',
-        images: data.images || [],
-        tags: data.tags || [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      setProducts([newProduct, ...products]);
+      // Refresh full list from backend to maintain absolute single source of truth
+      if (savedProduct) {
+        setProducts([savedProduct, ...products.filter((p) => p.id !== savedProduct?.id)]);
+      }
     }
 
     setEditingProduct(null);
@@ -129,7 +125,9 @@ export function App() {
         await adminApiService.deleteProduct(id);
       }
     } catch (apiErr) {
-      console.warn('Backend API delete error:', apiErr);
+      console.error('Backend API delete error:', apiErr);
+      alert('Failed to delete product from database. Please check your connection.');
+      return;
     }
     setProducts((prev) => prev.filter((p) => p.id !== id));
   };
@@ -141,21 +139,14 @@ export function App() {
         duplicated = await adminApiService.duplicateProduct(product.id);
       }
     } catch (apiErr) {
-      console.warn('Backend duplicate API error:', apiErr);
+      console.error('Backend duplicate API error:', apiErr);
+      alert('Failed to duplicate product in database.');
+      return;
     }
 
-    const copy: Product = duplicated || {
-      ...product,
-      id: `prod-${Date.now()}`,
-      name: `${product.name} (Copy)`,
-      sku: product.sku ? `${product.sku}-COPY` : undefined,
-      slug: `${product.slug}-copy-${Date.now()}`,
-      status: 'DRAFT',
-      isFeatured: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setProducts([copy, ...products]);
+    if (duplicated) {
+      setProducts([duplicated, ...products]);
+    }
   };
 
   const handleToggleProductStatus = async (id: string) => {
@@ -167,7 +158,9 @@ export function App() {
         await adminApiService.toggleStatus(id, nextStatus as any);
       }
     } catch (apiErr) {
-      console.warn('Backend toggle status error:', apiErr);
+      console.error('Backend toggle status error:', apiErr);
+      alert('Failed to update status on server.');
+      return;
     }
 
     setProducts((prev) =>

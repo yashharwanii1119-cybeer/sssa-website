@@ -2,6 +2,7 @@ import { getAssetPath } from '../utils/paths';
 
 export interface ProductItem {
   id: string;
+  sku?: string;
   name: string;
   category: string; // e.g. "Living Room"
   categorySlug: string; // e.g. "living-room"

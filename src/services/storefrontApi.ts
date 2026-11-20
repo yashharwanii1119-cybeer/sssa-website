@@ -28,12 +28,19 @@ export const storefrontApiService = {
         const data = await res.json();
         const apiProducts: ProductItem[] = data.products || [];
 
-        // Merge: Published API products take highest priority, backed by baseline items if needed
-        const seenIds = new Set(apiProducts.map((p) => p.id));
+        // Deduplication & Priority Merge:
+        // Live products from Neon DB are the absolute source of truth.
+        // Base catalog items are only kept if their name or SKU is not already defined in the live database.
+        const liveNames = new Set(apiProducts.map((p) => p.name.trim().toLowerCase()));
+        const liveSkus = new Set(apiProducts.filter((p) => p.sku).map((p) => p.sku!.trim().toLowerCase()));
+
         const combined = [...apiProducts];
 
         for (const baseItem of productsData) {
-          if (!seenIds.has(baseItem.id)) {
+          const nameCollision = liveNames.has(baseItem.name.trim().toLowerCase());
+          const skuCollision = (baseItem as any).sku && liveSkus.has((baseItem as any).sku.trim().toLowerCase());
+
+          if (!nameCollision && !skuCollision) {
             combined.push(baseItem);
           }
         }
