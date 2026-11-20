@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import emblem from '../assets/logo/sssa_emblem.png';
 import { getAssetPath } from '../utils/paths';
@@ -9,8 +9,6 @@ interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const slideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const slides = [
     {
@@ -51,71 +49,79 @@ export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
     },
   ];
 
-  const nextSlide = () => {
+  // Stable nextSlide function
+  const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
+  }, [slides.length]);
 
-  const prevSlide = () => {
+  // Stable prevSlide function
+  const prevSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
+  }, [slides.length]);
 
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
-  };
+  }, []);
 
-  // Automatic slide rotation every 5.5 seconds, paused on hover
+  // Automatic slide rotation every exactly 5 seconds (5000ms).
+  // Changing currentSlide resets this 5-second interval cleanly.
+  // Manual clicks on next/prev/indicator trigger currentSlide update, which cleans up
+  // the existing interval and establishes a new full 5-second countdown.
   useEffect(() => {
-    if (!isPaused) {
-      slideTimerRef.current = setTimeout(() => {
-        nextSlide();
-      }, 5500);
-    }
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 5000);
+
     return () => {
-      if (slideTimerRef.current) {
-        clearTimeout(slideTimerRef.current);
-      }
+      clearInterval(timer);
     };
-  }, [currentSlide, isPaused]);
+  }, [currentSlide, nextSlide]);
 
   return (
     <section
       id="home"
       className="relative min-h-[92vh] sm:min-h-[94vh] flex items-center justify-center overflow-hidden bg-[#271911] select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Slides Background Images */}
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-          }`}
-        >
-          <img
-            src={slide.image}
-            alt={slide.headline}
-            className={`w-full h-full object-cover object-center transform transition-transform duration-[7000ms] ease-out ${
-              index === currentSlide ? 'scale-105' : 'scale-100'
+      {slides.map((slide, index) => {
+        const isActive = index === currentSlide;
+        return (
+          <div
+            key={slide.id}
+            aria-hidden={!isActive}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
-          />
-          {/* Refined Luxury Dark Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#271911]/95 via-[#382419]/80 to-[#271911]/85" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#271911] via-transparent to-black/40" />
-        </div>
-      ))}
+          >
+            <img
+              src={slide.image}
+              alt={slide.headline}
+              className={`w-full h-full object-cover object-center transform transition-all duration-[6000ms] ease-out ${
+                isActive ? 'scale-105 translate-x-0' : 'scale-100 translate-x-1'
+              }`}
+            />
+            {/* Refined Luxury Dark Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#271911]/95 via-[#382419]/80 to-[#271911]/85" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#271911] via-transparent to-black/40" />
+          </div>
+        );
+      })}
 
       {/* Decorative Gold Frame Border */}
       <div className="absolute inset-4 sm:inset-8 border border-[#A77B42]/20 pointer-events-none z-20 hidden md:block" />
 
-      {/* Content Container */}
+      {/* Content Container with smooth fade & subtle horizontal shift */}
       <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center text-[#F7F3EC]">
         {slides.map((slide, index) => {
-          if (index !== currentSlide) return null;
+          const isActive = index === currentSlide;
           return (
             <div
               key={slide.id}
-              className="animate-fade-in transition-all duration-700 ease-out"
+              className={`transition-all duration-700 ease-out ${
+                isActive
+                  ? 'opacity-100 translate-x-0 pointer-events-auto block'
+                  : 'opacity-0 translate-x-4 pointer-events-none hidden'
+              }`}
             >
               {/* Emblem & Eyebrow */}
               <div className="inline-flex flex-col items-center justify-center mb-5 sm:mb-6">
@@ -176,7 +182,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
         })}
       </div>
 
-      {/* Manual Left/Right Navigation Arrows */}
+      {/* Manual Left Navigation Arrow */}
       <button
         onClick={prevSlide}
         aria-label="Previous slide"
@@ -185,6 +191,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
         <ChevronLeft className="w-6 h-6 transition-transform group-hover:-translate-x-0.5" />
       </button>
 
+      {/* Manual Right Navigation Arrow */}
       <button
         onClick={nextSlide}
         aria-label="Next slide"
