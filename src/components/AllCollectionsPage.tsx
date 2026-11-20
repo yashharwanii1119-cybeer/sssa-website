@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, ArrowRight, ArrowLeft, Sparkles, ChevronRight, ChevronDown } from 'lucide-react';
+import { Search, ArrowRight, ArrowLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { collectionsData } from '../data/collections';
 import { getAssetPath } from '../utils/paths';
 
@@ -187,88 +187,21 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
           
           {/* Desktop Filter Tabs Row */}
           <div className="hidden lg:flex flex-wrap items-center justify-center gap-2.5">
-            {/* 1. All Collections Tab */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleTabMouseEnter('all')}
-              onMouseLeave={handleTabMouseLeave}
+            {/* 1. All Collections Tab (Hover dropdown disabled; click enables full view) */}
+            <button
+              onClick={() => {
+                setSelectedCategorySlug('all');
+                setHoveredTabSlug(null);
+                onSelectCategory('all');
+              }}
+              className={`px-5 py-3 text-xs uppercase tracking-[0.16em] font-semibold transition-all duration-300 border cursor-pointer inline-flex items-center gap-1.5 ${
+                selectedCategorySlug === 'all'
+                  ? 'bg-[#382419] text-[#F7F3EC] border-[#382419] shadow-md'
+                  : 'bg-white text-[#59534C] border-[#EAE0D2] hover:border-[#A77B42] hover:text-[#382419]'
+              }`}
             >
-              <button
-                onClick={() => {
-                  setSelectedCategorySlug('all');
-                  setHoveredTabSlug(null);
-                  onSelectCategory('all');
-                }}
-                className={`px-5 py-3 text-xs uppercase tracking-[0.16em] font-semibold transition-all duration-300 border cursor-pointer inline-flex items-center gap-1.5 ${
-                  selectedCategorySlug === 'all'
-                    ? 'bg-[#382419] text-[#F7F3EC] border-[#382419] shadow-md'
-                    : 'bg-white text-[#59534C] border-[#EAE0D2] hover:border-[#A77B42] hover:text-[#382419]'
-                }`}
-              >
-                <span>All Collections</span>
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredTabSlug === 'all' ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
-              </button>
-
-              {/* Mega-Menu for "All Collections": 6 Columns across all main categories */}
-              {hoveredTabSlug === 'all' && (
-                <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[1120px] max-w-[95vw] z-50 animate-fadeIn"
-                  onMouseEnter={() => handleTabMouseEnter('all')}
-                  onMouseLeave={handleTabMouseLeave}
-                >
-                  <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none p-6 backdrop-blur-md">
-                    <div className="flex items-center justify-between pb-3 mb-5 border-b border-[#EAE0D2] text-[11px] uppercase tracking-widest font-bold text-[#A77B42]">
-                      <span className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span>All 6 Furniture Categories &amp; 30 Subcategories</span>
-                      </span>
-                      <span className="text-[#7D6E63] font-normal normal-case">
-                        Hover or click any subcategory to explore
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-6 gap-4">
-                      {categories.map((cat) => (
-                        <div key={cat.id} className="space-y-2.5">
-                          <button
-                            onClick={() => {
-                              setSelectedCategorySlug(cat.slug);
-                              setHoveredTabSlug(null);
-                              onSelectCategory(cat.slug);
-                            }}
-                            className="w-full text-left font-serif font-bold text-[13px] text-[#382419] hover:text-[#A77B42] transition-colors pb-1.5 border-b border-[#EAE0D2] block"
-                          >
-                            {cat.title}
-                          </button>
-                          
-                          <div className="space-y-1.5">
-                            {cat.subcategories.map((sub) => (
-                              <button
-                                key={sub.id}
-                                onClick={() => {
-                                  setHoveredTabSlug(null);
-                                  onSelectSubcategory(cat.slug, sub.slug);
-                                }}
-                                className="w-full text-left p-1 rounded-none hover:bg-[#F3ECE1] transition-colors group flex items-center gap-1.5 cursor-pointer"
-                              >
-                                <img
-                                  src={sub.image}
-                                  alt={sub.name}
-                                  className="w-6 h-6 object-cover rounded-xs shrink-0 border border-[#EAE0D2]"
-                                />
-                                <span className="text-[11px] text-[#59534C] group-hover:text-[#A77B42] transition-colors truncate">
-                                  {sub.name}
-                                </span>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+              <span>All Collections</span>
+            </button>
 
             {/* 2 to 7. Individual Main Category Tabs with Dropdown Menu */}
             {categories.map((cat) => {
