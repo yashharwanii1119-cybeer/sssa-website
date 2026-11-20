@@ -22,7 +22,11 @@ export const authenticateToken = (
     return;
   }
 
-  const secret = process.env.JWT_SECRET || 'super-secret-jwt-token-key-for-sssa-admin';
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    res.status(500).json({ message: 'Authentication misconfigured: missing JWT_SECRET' });
+    return;
+  }
 
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {

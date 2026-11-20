@@ -31,8 +31,10 @@ app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
+    } else if (process.env.NODE_ENV !== 'production') {
+      callback(null, true); // Permissive in dev only
     } else {
-      callback(null, true); // Permissive in dev, strict in prod
+      callback(new Error(`Origin ${origin} not allowed by CORS`));
     }
   },
   credentials: true
