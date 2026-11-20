@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUp, Mail, MapPin, Globe, Shield, Sparkles } from 'lucide-react';
+import { ArrowUp, Mail, Phone, MapPin, Globe, Shield, Sparkles } from 'lucide-react';
 import logoLight from '../assets/logo/sssa_logo_light.png';
 import { collectionsData } from '../data/collections';
 import { openWhatsAppEnquiry } from '../utils/whatsapp';
@@ -111,12 +111,21 @@ export const Footer: React.FC<FooterProps> = ({
             </h4>
             <div className="space-y-3 text-xs text-[#EAE0D2]/80">
               <div className="flex items-start gap-2.5">
+                <Phone className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
+                <a
+                  href="tel:+919983343043"
+                  className="hover:text-[#C4975C] transition-colors"
+                >
+                  +91 99833 43043
+                </a>
+              </div>
+              <div className="flex items-start gap-2.5">
                 <Mail className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
                 <a
-                  href="mailto:Info@shreeshivshaktiart.com"
+                  href="mailto:shreeshivshaktiart92@gmail.com"
                   className="hover:text-[#C4975C] transition-colors break-all"
                 >
-                  Info@shreeshivshaktiart.com
+                  shreeshivshaktiart92@gmail.com
                 </a>
               </div>
               <div className="flex items-start gap-2.5">
