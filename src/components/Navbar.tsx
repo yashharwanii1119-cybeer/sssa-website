@@ -40,8 +40,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   return (
     <>
       {/* Top Utility Bar: Slim antique-gold / warm-brown strip */}
-      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 sm:px-6 lg:px-8 border-b border-[#A77B42]/25 relative z-50">
-        <div className="max-w-[1440px] mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-6 tracking-wider text-[11px] sm:text-xs">
+      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 sm:px-6 lg:px-10 border-b border-[#A77B42]/25 relative z-50">
+        <div className="max-w-[1536px] mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-6 tracking-wider text-[11px] sm:text-xs">
           
           {/* Highlight 1: Premium Wooden Handicrafts */}
           <div className="flex items-center gap-2">
@@ -90,9 +90,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
             : 'bg-[#F7F3EC]/95 backdrop-blur-sm py-4 sm:py-5 border-b border-[#EAE0D2]/40'
         }`}
       >
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between gap-6 xl:gap-10">
-            {/* Logo on Left - Increased size by 15-20% with generous breathing room */}
+        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="flex items-center justify-between">
+            {/* Logo on Left: Fixed on the left edge with generous breathing room */}
             <a href="#home" className="flex items-center gap-3 group shrink-0 py-0.5">
               <img
                 src={logoLight}
@@ -101,21 +101,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               />
             </a>
 
-            {/* Desktop Navigation Links + CTA Container on Right */}
-            <div className="hidden lg:flex items-center justify-end flex-1 gap-8 xl:gap-11">
+            {/* Desktop Navigation Links + CTA Container: Placed on the right with noticeable separation from Logo (50-70px extra gap) */}
+            <div className="hidden lg:flex items-center justify-end ml-12 xl:ml-20 gap-6 xl:gap-9 whitespace-nowrap">
               
               {/* Navigation Items with relaxed, airy horizontal spacing */}
-              <div className="flex items-center space-x-7 xl:space-x-10">
+              <div className="flex items-center space-x-6 xl:space-x-8">
                 <a
                   href="#home"
-                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                  className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   Home
                 </a>
 
                 <a
                   href="#about"
-                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                  className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   About Us
                 </a>
@@ -129,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                 >
                   <a
                     href="#collections"
-                    className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                    className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-1.5 xl:gap-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                     onClick={() => setCollectionsDropdownOpen(false)}
                   >
                     <span>Our Collections</span>
@@ -178,14 +178,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
                 <a
                   href="#craftsmanship"
-                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                  className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   Craftsmanship
                 </a>
 
                 <a
                   href="#contact"
-                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                  className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   Contact
                 </a>
@@ -195,7 +195,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <div className="pl-3 xl:pl-5 border-l border-[#A77B42]/20">
                 <button
                   onClick={() => onOpenEnquiry()}
-                  className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 overflow-hidden text-xs uppercase tracking-widest font-semibold text-white bg-[#382419] border border-[#382419] rounded-none shadow-sm hover:bg-[#A77B42] hover:border-[#A77B42] transition-all duration-300 cursor-pointer shrink-0"
+                  className="group relative inline-flex items-center justify-center gap-2 px-5 xl:px-6 py-2.5 xl:py-3 overflow-hidden text-xs uppercase tracking-widest font-semibold text-white bg-[#382419] border border-[#382419] rounded-none shadow-sm hover:bg-[#A77B42] hover:border-[#A77B42] transition-all duration-300 cursor-pointer shrink-0"
                 >
                   <span>Request An Enquiry</span>
                   <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
