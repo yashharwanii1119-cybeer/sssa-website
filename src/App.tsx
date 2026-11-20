@@ -3,7 +3,6 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
 import { Collections } from './components/Collections';
-import { FeaturedProducts } from './components/FeaturedProducts';
 import { Craftsmanship } from './components/Craftsmanship';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
@@ -151,10 +150,6 @@ export function App() {
             <Collections
               onSelectCollection={handleSelectCollection}
               onNavigateAllCollections={() => handleNavigateAllCollections('all')}
-            />
-            <FeaturedProducts
-              onOpenEnquiry={handleOpenEnquiry}
-              onViewProductModal={(prod) => setSelectedProduct(prod)}
             />
             <Craftsmanship />
             <Contact initialSubject={enquiryInitialSubject} />
