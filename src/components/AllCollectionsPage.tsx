@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Search, ArrowRight, ArrowLeft, Eye, Mail, ChevronRight, ChevronDown, SlidersHorizontal } from 'lucide-react';
 import { collectionsData } from '../data/collections';
 import { productsData, ProductItem } from '../data/products';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface AllCollectionsPageProps {
   onBackToHome: () => void;
@@ -530,9 +531,9 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
                         <Eye className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => onOpenEnquiry(product.name)}
+                        onClick={() => openWhatsAppEnquiry(product)}
                         className="p-2.5 bg-[#382419] text-white hover:bg-[#A77B42] transition-colors shadow-md cursor-pointer"
-                        title="Enquire Now"
+                        title="Enquire on WhatsApp"
                       >
                         <Mail className="w-4 h-4" />
                       </button>
@@ -570,7 +571,7 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
                       </button>
 
                       <button
-                        onClick={() => onOpenEnquiry(product.name)}
+                        onClick={() => openWhatsAppEnquiry(product)}
                         className="px-4 py-2 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-wider font-semibold hover:bg-[#A77B42] transition-colors cursor-pointer"
                       >
                         Enquire

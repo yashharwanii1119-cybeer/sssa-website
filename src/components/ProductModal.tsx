@@ -1,11 +1,12 @@
 import React from 'react';
 import { X, Mail } from 'lucide-react';
 import { ProductItem } from '../data/products';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface ProductModalProps {
   product: ProductItem | null;
   onClose: () => void;
-  onEnquire: (productName: string) => void;
+  onEnquire?: (productName: string) => void;
 }
 
 export const ProductModal: React.FC<ProductModalProps> = ({
@@ -14,6 +15,14 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   onEnquire,
 }) => {
   if (!product) return null;
+
+  const handleEnquireClick = () => {
+    openWhatsAppEnquiry(product);
+    if (onEnquire) {
+      onEnquire(product.name);
+    }
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-fade-in">
@@ -87,10 +96,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
             <div className="pt-2 flex flex-col sm:flex-row gap-3">
               <button
-                onClick={() => {
-                  onClose();
-                  onEnquire(product.name);
-                }}
+                onClick={handleEnquireClick}
                 className="w-full inline-flex items-center justify-center gap-2 py-3 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors cursor-pointer"
               >
                 <Mail className="w-4 h-4" />

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Search, ArrowRight, ArrowLeft, Eye, Mail, Sparkles, SlidersHorizontal } from 'lucide-react';
 import { CollectionItem, SubCategoryItem } from '../data/collections';
 import { productsData, ProductItem } from '../data/products';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface SubCategoryPageProps {
   category: CollectionItem;
@@ -228,9 +229,9 @@ export const SubCategoryPage: React.FC<SubCategoryPageProps> = ({
                       <Eye className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => onOpenEnquiry(`Product Enquiry: ${product.name} (${product.subcategory})`)}
+                      onClick={() => openWhatsAppEnquiry(product)}
                       className="p-2 bg-[#382419] text-white hover:bg-[#A77B42] transition-colors shadow-md cursor-pointer"
-                      title="Enquire Now"
+                      title="Enquire on WhatsApp"
                     >
                       <Mail className="w-4 h-4" />
                     </button>
@@ -267,7 +268,7 @@ export const SubCategoryPage: React.FC<SubCategoryPageProps> = ({
                     </button>
 
                     <button
-                      onClick={() => onOpenEnquiry(`Enquiry: ${product.name} (${product.subcategory})`)}
+                      onClick={() => openWhatsAppEnquiry(product)}
                       className="px-4 py-2 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-wider font-semibold hover:bg-[#A77B42] transition-colors cursor-pointer"
                     >
                       Enquire Now
