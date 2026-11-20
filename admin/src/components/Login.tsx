@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, ShieldAlert, ArrowRight, Sparkles } from 'lucide-react';
+import { Lock, Mail, ShieldAlert, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { User } from '../types';
 
 interface LoginProps {
@@ -9,6 +9,7 @@ interface LoginProps {
 export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('admin@shreeshivshaktiart.com');
   const [password, setPassword] = useState('Sssa@Admin2026');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -84,13 +85,25 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             <div className="relative">
               <Lock className="w-4 h-4 text-[#C4975C] absolute left-3 top-3.5" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-9 pr-4 py-2.5 rounded-lg bg-[#1E140E] border border-[#A77B42]/40 text-xs text-white focus:outline-none focus:border-[#C4975C]"
+                className="w-full pl-9 pr-10 py-2.5 rounded-lg bg-[#1E140E] border border-[#A77B42]/40 text-xs text-white focus:outline-none focus:border-[#C4975C]"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#C4975C] hover:text-[#EAE0D2] transition-colors p-1 rounded cursor-pointer focus:outline-none"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
             </div>
           </div>
 

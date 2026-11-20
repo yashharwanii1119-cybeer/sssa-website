@@ -159,7 +159,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           </button>
           <div>
             <h2 className="text-xl font-serif font-bold text-slate-800">
-              {isEditing ? `Edit: ${initialProduct?.name}` : 'Add New Handcrafted Creation'}
+              {isEditing ? `Edit: ${initialProduct?.name}` : 'Create Product'}
             </h2>
             <p className="text-xs text-slate-500">
               Fill in product specifications, upload high-resolution images, and set publishing status.

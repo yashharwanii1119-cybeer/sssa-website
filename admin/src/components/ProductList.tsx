@@ -57,18 +57,18 @@ export const ProductList: React.FC<ProductListProps> = ({
       {/* Header & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-serif font-bold text-slate-800">Product Management</h2>
+          <h2 className="text-xl font-serif font-bold text-slate-800">Products</h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Manage your furniture listings, update specifications, and toggle publishing.
+            Manage your furniture listings, search by name or SKU, edit specifications, and toggle status.
           </p>
         </div>
 
         <button
           onClick={onAddNew}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#A77B42] text-white rounded-lg text-xs font-semibold hover:bg-[#8f6633] transition-colors shadow-sm cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-[#A77B42] text-white rounded-lg text-xs font-semibold hover:bg-[#8f6633] transition-colors cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
-          <span>Add New Product</span>
+          <span>Create Product</span>
         </button>
       </div>
 
