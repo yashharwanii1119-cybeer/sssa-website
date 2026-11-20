@@ -48,12 +48,18 @@ app.use('/api/media', mediaRoutes);
 app.use('/api/public', publicRoutes); // Public read-only endpoints for main storefront
 
 // Health Check
+const getHealthStatus = () => ({
+  status: 'ok',
+  service: 'SSSA Backend',
+  timestamp: new Date().toISOString()
+});
+
+app.get('/health', (req, res) => {
+  res.json(getHealthStatus());
+});
+
 app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'online',
-    service: 'Shree Shiv Shakti Art API',
-    timestamp: new Date().toISOString()
-  });
+  res.json(getHealthStatus());
 });
 
 // Error handling middleware
