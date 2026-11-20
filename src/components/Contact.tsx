@@ -117,8 +117,13 @@ export const Contact: React.FC<ContactProps> = ({ initialSubject = '' }) => {
                   </div>
                   <div>
                     <p className="text-[11px] uppercase tracking-wider text-[#C4975C] font-semibold">Official Email</p>
-                    <p className="font-mono text-xs text-white mt-0.5">[Client Email to be provided]</p>
-                    <p className="text-[11px] text-[#EAE0D2]/60">Configurable upon client confirmation</p>
+                    <a
+                      href="mailto:Info@shreeshivshaktiart.com"
+                      className="font-mono text-xs text-white hover:text-[#C4975C] transition-colors mt-0.5 inline-block break-all"
+                    >
+                      Info@shreeshivshaktiart.com
+                    </a>
+                    <p className="text-[11px] text-[#EAE0D2]/60">Export &amp; Trade Inquiries</p>
                   </div>
                 </div>
 

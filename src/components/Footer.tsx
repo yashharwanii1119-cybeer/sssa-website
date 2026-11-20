@@ -111,7 +111,12 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-3 text-xs text-[#EAE0D2]/80">
               <div className="flex items-start gap-2.5">
                 <Mail className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
-                <span>[Official Email to be provided]</span>
+                <a
+                  href="mailto:Info@shreeshivshaktiart.com"
+                  className="hover:text-[#C4975C] transition-colors break-all"
+                >
+                  Info@shreeshivshaktiart.com
+                </a>
               </div>
               <div className="flex items-start gap-2.5">
                 <Globe className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
