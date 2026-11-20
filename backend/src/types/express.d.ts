@@ -1,4 +1,4 @@
-export {};
+import 'multer';
 
 declare global {
   namespace Express {
@@ -12,3 +12,6 @@ declare global {
     }
   }
 }
+
+export {};
+
