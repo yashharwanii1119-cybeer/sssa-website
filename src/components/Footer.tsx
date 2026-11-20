@@ -121,12 +121,21 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div className="flex items-start gap-2.5">
                 <Mail className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
-                <a
-                  href="mailto:shreeshivshaktiart92@gmail.com"
-                  className="hover:text-[#C4975C] transition-colors break-all"
-                >
-                  shreeshivshaktiart92@gmail.com
-                </a>
+                <div className="leading-relaxed">
+                  <a
+                    href="mailto:shreeshivshaktiart92@gmail.com"
+                    className="hover:text-[#C4975C] transition-colors break-all"
+                  >
+                    shreeshivshaktiart92@gmail.com
+                  </a>
+                  <span>,&nbsp;</span>
+                  <a
+                    href="mailto:info@shreeshivshaktiart.com"
+                    className="hover:text-[#C4975C] transition-colors break-all"
+                  >
+                    info@shreeshivshaktiart.com
+                  </a>
+                </div>
               </div>
               <div className="flex items-start gap-2.5">
                 <Globe className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
