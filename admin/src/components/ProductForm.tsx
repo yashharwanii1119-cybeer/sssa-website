@@ -10,13 +10,14 @@ import {
   AlertCircle,
   Image as ImageIcon,
   Sparkles,
-  Loader2
+  Loader2,
+  Globe
 } from 'lucide-react';
 
 interface ProductFormProps {
   initialProduct?: Product | null;
   categories: Category[];
-  onSave: (product: Partial<Product>) => void;
+  onSave: (product: Partial<Product>) => Promise<void> | void;
   onCancel: () => void;
 }
 
@@ -55,6 +56,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Dynamically update subcategories when main category changes
@@ -208,18 +211,22 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent, forcePublish: boolean = false) => {
+    if (e && e.preventDefault) e.preventDefault();
+    setUploadError(null);
+    setSuccessMessage(null);
 
     if (!formData.name.trim()) {
-      alert('Product name is required.');
+      setUploadError('Product name is required.');
       return;
     }
 
     if (!formData.mainImage.trim()) {
-      alert('Please provide at least a main product image.');
+      setUploadError('Please provide at least one primary product image before publishing.');
       return;
     }
+
+    const targetStatus = forcePublish ? 'PUBLISHED' : (formData.status as any);
 
     const payload: Partial<Product> = {
       ...initialProduct,
@@ -227,7 +234,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       sku: formData.sku.trim() || undefined,
       categoryId: formData.categoryId,
       subcategoryId: formData.subcategoryId,
-      status: formData.status as any,
+      status: targetStatus,
       isFeatured: formData.isFeatured,
       shortDescription: formData.shortDescription.trim() || undefined,
       description: formData.description.trim() || undefined,
@@ -246,13 +253,26 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         .filter(Boolean),
     };
 
-    onSave(payload);
+    setIsSubmitting(true);
+    try {
+      await onSave(payload);
+      if (forcePublish || targetStatus === 'PUBLISHED') {
+        setSuccessMessage('Product published successfully! It is now live on your website.');
+        setFormData((prev) => ({ ...prev, status: 'PUBLISHED' }));
+      } else {
+        setSuccessMessage('Product saved successfully as Draft.');
+      }
+    } catch (err: any) {
+      setUploadError(err.message || 'Failed to save product. Please check connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl mx-auto pb-12 animate-fade-in">
       {/* Header Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-4">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -271,24 +291,78 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+            disabled={isSubmitting}
+            className="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#A77B42] text-white rounded-lg text-xs font-semibold hover:bg-[#8f6633] transition-colors shadow-sm cursor-pointer"
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 text-white rounded-lg text-xs font-semibold hover:bg-slate-900 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
           >
-            <Save className="w-4 h-4" />
-            <span>{isEditing ? 'Save Changes' : 'Create Product'}</span>
+            {isSubmitting ? (
+              <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            <span>{isEditing ? 'Save Product' : 'Save as Draft'}</span>
+          </button>
+
+          {/* Prominent Gold Publish Button */}
+          <button
+            type="button"
+            onClick={(e) => handleSubmit(e, true)}
+            disabled={isSubmitting}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#A77B42] via-[#C4975C] to-[#8f6633] text-white rounded-lg text-xs uppercase tracking-wider font-bold shadow-md hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50 border border-amber-300/40"
+          >
+            {isSubmitting ? (
+              <Loader2 className="w-4 h-4 animate-spin text-white" />
+            ) : (
+              <Globe className="w-4 h-4 text-white" />
+            )}
+            <span>🌐 Publish Product</span>
           </button>
         </div>
       </div>
+
+      {/* Notifications */}
+      {successMessage && (
+        <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 flex items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0" />
+            <span className="font-semibold">{successMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSuccessMessage(null)}
+            className="text-emerald-700 hover:text-emerald-900 p-1"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+
+      {uploadError && (
+        <div className="p-4 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 flex items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+            <span className="font-semibold">{uploadError}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setUploadError(null)}
+            className="text-red-700 hover:text-red-900 p-1"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Core Fields & Specifications (2 cols) */}

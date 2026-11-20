@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ArrowRight, ArrowLeft, Eye, Mail, Sparkles, SlidersHorizontal } from 'lucide-react';
 import { CollectionItem, SubCategoryItem } from '../data/collections';
 import { productsData, ProductItem } from '../data/products';
 import { openWhatsAppEnquiry } from '../utils/whatsapp';
+import { storefrontApiService } from '../services/storefrontApi';
 
 interface SubCategoryPageProps {
   category: CollectionItem;
@@ -27,15 +28,31 @@ export const SubCategoryPage: React.FC<SubCategoryPageProps> = ({
 }) => {
   void onOpenEnquiry;
   const [searchQuery, setSearchQuery] = useState('');
+  const [liveProducts, setLiveProducts] = useState<ProductItem[]>(productsData);
+
+  useEffect(() => {
+    let isMounted = true;
+    storefrontApiService.getPublishedProducts({
+      category: category.slug,
+      subcategory: subcategory.slug,
+    }).then((data) => {
+      if (isMounted && data.length > 0) {
+        setLiveProducts(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [category.slug, subcategory.slug]);
 
   // Find products belonging to this subcategory
   const products = useMemo(() => {
-    return productsData.filter(
+    return liveProducts.filter(
       (p) =>
         p.categorySlug.toLowerCase() === category.slug.toLowerCase() &&
         p.subcategorySlug.toLowerCase() === subcategory.slug.toLowerCase()
     );
-  }, [category.slug, subcategory.slug]);
+  }, [liveProducts, category.slug, subcategory.slug]);
 
   // Filter products by search query
   const filteredProducts = useMemo(() => {

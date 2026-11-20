@@ -3,6 +3,7 @@ import { Search, ArrowRight, ArrowLeft, Eye, Mail, ChevronRight, ChevronDown, Sl
 import { collectionsData } from '../data/collections';
 import { productsData, ProductItem } from '../data/products';
 import { openWhatsAppEnquiry } from '../utils/whatsapp';
+import { storefrontApiService } from '../services/storefrontApi';
 
 interface AllCollectionsPageProps {
   onBackToHome: () => void;
@@ -35,6 +36,21 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
   const productSectionRef = useRef<HTMLDivElement>(null);
 
   const categories = useMemo(() => collectionsData, []);
+
+  // Live product list synced with backend Neon DB
+  const [liveProducts, setLiveProducts] = useState<ProductItem[]>(productsData);
+
+  useEffect(() => {
+    let isMounted = true;
+    storefrontApiService.getPublishedProducts().then((data) => {
+      if (isMounted && data.length > 0) {
+        setLiveProducts(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Update selection when props change
   useEffect(() => {
@@ -108,7 +124,7 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
 
   // Filtered Products based on: Category + Subcategory + Live Search
   const filteredProducts = useMemo(() => {
-    return productsData.filter((product) => {
+    return liveProducts.filter((product) => {
       // 1. Category match
       const matchesCategory =
         selectedCategorySlug === 'all' ||
@@ -133,7 +149,7 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
 
       return matchesCategory && matchesSubcategory && matchesSearch;
     });
-  }, [selectedCategorySlug, selectedSubCategorySlug, searchQuery]);
+  }, [liveProducts, selectedCategorySlug, selectedSubCategorySlug, searchQuery]);
 
   // Displayed subcategory cards for the catalog browser section
   const displayedCatalogCategories = useMemo(() => {

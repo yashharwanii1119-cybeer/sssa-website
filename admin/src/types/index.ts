@@ -13,6 +13,8 @@ export interface Subcategory {
   image?: string;
   displayOrder: number;
   categoryId: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Category {
@@ -24,6 +26,8 @@ export interface Category {
   image?: string;
   displayOrder: number;
   subcategories: Subcategory[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ProductImage {
