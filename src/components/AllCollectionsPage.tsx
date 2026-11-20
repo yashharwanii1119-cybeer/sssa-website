@@ -2,7 +2,6 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Search, ArrowRight, ArrowLeft, Eye, Mail, ChevronRight, ChevronDown, SlidersHorizontal } from 'lucide-react';
 import { collectionsData } from '../data/collections';
 import { productsData, ProductItem } from '../data/products';
-import { getAssetPath } from '../utils/paths';
 
 interface AllCollectionsPageProps {
   onBackToHome: () => void;
@@ -197,49 +196,9 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
       </div>
 
       {/* =========================================================================
-          A. Premium Hero Section
+          Search & Interactive Category Navigation
       ========================================================================= */}
-      <section className="relative py-18 sm:py-24 bg-[#271911] text-[#F7F3EC] overflow-hidden text-center">
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <img
-            src={getAssetPath("/images/about_european_interior.jpg")}
-            alt="Interior Ambience"
-            className="w-full h-full object-cover object-center filter grayscale"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#271911] via-[#271911]/90 to-black/40 pointer-events-none" />
-
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="inline-flex items-center gap-2.5 mb-1">
-            <span className="w-6 h-[1.5px] bg-[#D4AF37]"></span>
-            <span className="text-xs uppercase font-semibold tracking-[0.28em] text-[#D4AF37]">
-              OUR COLLECTIONS
-            </span>
-            <span className="w-6 h-[1.5px] bg-[#D4AF37]"></span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif tracking-tight text-white leading-tight">
-            Crafted For Distinctive Spaces
-          </h1>
-
-          <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-[#EAE0D2]/90 font-light leading-relaxed">
-            Explore our curated range of handcrafted wooden furniture, combining authentic Indian artistry, premium materials and timeless design.
-          </p>
-
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-[11px] sm:text-xs uppercase tracking-widest text-[#D4AF37] font-medium">
-            <span>6 Core Collections</span>
-            <span>•</span>
-            <span>30 Specialized Subcategories</span>
-            <span>•</span>
-            <span>Worldwide Export Quality</span>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          B. Search & C. Interactive Category Navigation
-      ========================================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-10">
         
         {/* Functional Search Bar */}
         <div className="max-w-2xl mx-auto mb-10">
