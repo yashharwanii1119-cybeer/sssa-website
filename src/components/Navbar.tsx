@@ -5,9 +5,17 @@ import { collectionsData } from '../data/collections';
 
 interface NavbarProps {
   onOpenEnquiry: (productName?: string) => void;
+  onNavigateHome?: () => void;
+  onNavigateCollections?: (categoryName?: string) => void;
+  currentPage?: 'home' | 'collections';
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  onOpenEnquiry,
+  onNavigateHome,
+  onNavigateCollections,
+  currentPage = 'home',
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [collectionsDropdownOpen, setCollectionsDropdownOpen] = useState(false);
@@ -58,6 +66,31 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
     };
   }, []);
 
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (currentPage !== 'home' && onNavigateHome) {
+      e.preventDefault();
+      onNavigateHome();
+    }
+  };
+
+  const handleCategoryClick = (catTitle: string, e: React.MouseEvent) => {
+    setCollectionsDropdownOpen(false);
+    setMobileMenuOpen(false);
+    if (onNavigateCollections) {
+      e.preventDefault();
+      onNavigateCollections(catTitle);
+    }
+  };
+
+  const handleAllCollectionsClick = (e: React.MouseEvent) => {
+    setCollectionsDropdownOpen(false);
+    setMobileMenuOpen(false);
+    if (onNavigateCollections) {
+      e.preventDefault();
+      onNavigateCollections('All Products');
+    }
+  };
+
   return (
     <>
       {/* Top Utility Bar: Slim antique-gold / warm-brown strip */}
@@ -94,6 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
             </span>
             <a
               href="#contact"
+              onClick={handleHomeClick}
               className="ml-1 text-[#D4AF37] hover:text-white underline underline-offset-2 transition-colors font-medium hidden md:inline"
             >
               Contact Desk
@@ -114,7 +148,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
         <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between">
             {/* Logo on Left: Fixed on the left edge with generous breathing room */}
-            <a href="#home" className="flex items-center gap-3 group shrink-0 py-0.5">
+            <a
+              href="#home"
+              onClick={handleHomeClick}
+              className="flex items-center gap-3 group shrink-0 py-0.5"
+            >
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art - Wooden Handicrafts Manufacturing and Export House"
@@ -129,6 +167,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <div className="flex items-center space-x-6 xl:space-x-8">
                 <a
                   href="#home"
+                  onClick={handleHomeClick}
                   className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   Home
@@ -136,6 +175,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
                 <a
                   href="#about"
+                  onClick={handleHomeClick}
                   className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   About Us
@@ -151,7 +191,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                   <a
                     href="#collections"
                     className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-1.5 xl:gap-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-                    onClick={() => setCollectionsDropdownOpen((prev) => !prev)}
+                    onClick={(e) => {
+                      if (onNavigateCollections) {
+                        e.preventDefault();
+                        onNavigateCollections('All Products');
+                      } else {
+                        setCollectionsDropdownOpen((prev) => !prev);
+                      }
+                    }}
                   >
                     <span>Our Collections</span>
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${collectionsDropdownOpen ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
@@ -171,7 +218,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                             <a
                               key={cat.id}
                               href={`#collection-${cat.id}`}
-                              onClick={() => setCollectionsDropdownOpen(false)}
+                              onClick={(e) => handleCategoryClick(cat.title, e)}
                               className="block py-3 px-3 hover:bg-[#F3ECE1]/80 transition-colors group/item rounded-none"
                             >
                               <div className="flex items-center justify-between">
@@ -191,14 +238,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
                         {/* Bottom Link: Explore All Collections */}
                         <div className="mt-3 pt-3 border-t border-[#EAE0D2] px-3">
-                          <a
-                            href="#collections"
-                            onClick={() => setCollectionsDropdownOpen(false)}
-                            className="text-[12px] uppercase tracking-wider font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between py-1 transition-colors"
+                          <button
+                            onClick={handleAllCollectionsClick}
+                            className="w-full text-left text-[12px] uppercase tracking-wider font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between py-1 transition-colors cursor-pointer"
                           >
                             <span>Explore All Collections</span>
                             <ArrowUpRight className="w-4 h-4 text-[#A77B42]" />
-                          </a>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -207,6 +253,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
                 <a
                   href="#craftsmanship"
+                  onClick={handleHomeClick}
                   className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   Craftsmanship
@@ -214,6 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
                 <a
                   href="#contact"
+                  onClick={handleHomeClick}
                   className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
                   Contact
@@ -258,7 +306,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
             <div className="flex flex-col space-y-2">
               <a
                 href="#home"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleHomeClick(e);
+                }}
                 className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 Home
@@ -266,7 +317,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
               <a
                 href="#about"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleHomeClick(e);
+                }}
                 className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 About Us
@@ -284,11 +338,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                 {mobileCollectionsOpen && (
                   <div className="pl-3 pr-2 pb-2 divide-y divide-[#EAE0D2]/50 bg-[#EAE0D2]/30 my-1">
                     {collectionsData.map((cat) => (
-                      <a
+                      <button
                         key={cat.id}
-                        href={`#collection-${cat.id}`}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block py-2.5 px-1 hover:text-[#A77B42] transition-colors"
+                        onClick={(e) => handleCategoryClick(cat.title, e)}
+                        className="w-full text-left block py-2.5 px-1 hover:text-[#A77B42] transition-colors"
                       >
                         <div className="text-xs font-serif font-semibold text-[#25221F]">
                           • {cat.title}
@@ -296,17 +349,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                         <div className="text-[10.5px] text-[#7D6E63] font-light pl-3 mt-0.5">
                           {cat.subtitle}
                         </div>
-                      </a>
+                      </button>
                     ))}
                     <div className="pt-2 px-1">
-                      <a
-                        href="#collections"
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-xs font-semibold uppercase tracking-wider text-[#382419] flex items-center justify-between py-1"
+                      <button
+                        onClick={handleAllCollectionsClick}
+                        className="w-full text-left text-xs font-semibold uppercase tracking-wider text-[#382419] flex items-center justify-between py-1"
                       >
                         <span>Explore All Collections</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
+                      </button>
                     </div>
                   </div>
                 )}
@@ -314,7 +366,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
               <a
                 href="#craftsmanship"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleHomeClick(e);
+                }}
                 className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 Craftsmanship
@@ -322,7 +377,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
 
               <a
                 href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleHomeClick(e);
+                }}
                 className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 Contact

@@ -4,12 +4,21 @@ import { collectionsData, CollectionItem } from '../data/collections';
 
 interface CollectionsProps {
   onSelectCollection: (collection: CollectionItem) => void;
+  onNavigateAllCollections: () => void;
 }
 
-export const Collections: React.FC<CollectionsProps> = ({ onSelectCollection }) => {
+export const Collections: React.FC<CollectionsProps> = ({
+  onSelectCollection,
+  onNavigateAllCollections,
+}) => {
+  // Show only 3 featured categories on homepage: Living Room, Bedroom, Dining Room
+  const featuredCollections = collectionsData.slice(0, 3);
+
   return (
     <section id="collections" className="py-24 bg-[#EAE0D2]/50 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <div className="inline-flex items-center gap-2 mb-2">
@@ -27,8 +36,9 @@ export const Collections: React.FC<CollectionsProps> = ({ onSelectCollection }) 
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {collectionsData.map((item) => (
+        {/* 3 Featured Collection Cards: Living Room, Bedroom, Dining Room */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-14">
+          {featuredCollections.map((item) => (
             <div
               key={item.id}
               id={`collection-${item.id}`}
@@ -73,6 +83,18 @@ export const Collections: React.FC<CollectionsProps> = ({ onSelectCollection }) 
             </div>
           ))}
         </div>
+
+        {/* Prominent & Elegant EXPLORE ALL COLLECTIONS Button */}
+        <div className="text-center pt-2">
+          <button
+            onClick={onNavigateAllCollections}
+            className="group relative inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4 bg-[#382419] text-[#F7F3EC] text-xs sm:text-sm uppercase tracking-[0.2em] font-semibold border border-[#382419] shadow-md hover:bg-[#A77B42] hover:border-[#A77B42] transition-all duration-300 cursor-pointer"
+          >
+            <span>EXPLORE ALL COLLECTIONS</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
+          </button>
+        </div>
+
       </div>
     </section>
   );

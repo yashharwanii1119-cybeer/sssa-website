@@ -1,31 +1,29 @@
 import React from 'react';
 import { ArrowUp, Mail, MapPin, Globe, Shield, Sparkles } from 'lucide-react';
 import logoLight from '../assets/logo/sssa_logo_light.png';
+import { collectionsData } from '../data/collections';
 
 interface FooterProps {
   onOpenEnquiry: (subject?: string) => void;
+  onNavigateHome?: () => void;
+  onNavigateCollections?: (categoryName?: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onOpenEnquiry,
+  onNavigateHome,
+  onNavigateCollections,
+}) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Our Collections', href: '#collections' },
-    { name: 'Craftsmanship', href: '#craftsmanship' },
-    { name: 'Contact', href: '#contact' },
-  ];
-
-  const collections = [
-    'Hand-Carved Furniture',
-    'Wooden Handicrafts',
-    'Decorative Wooden Art',
-    'Wooden Home Décor',
-    'Traditional Craftsmanship',
-    'Custom Wooden Creations',
+    { name: 'Home', href: '#home', isHome: true },
+    { name: 'About Us', href: '#about', isHome: true },
+    { name: 'Our Collections', href: '#collections', isHome: false },
+    { name: 'Craftsmanship', href: '#craftsmanship', isHome: true },
+    { name: 'Contact', href: '#contact', isHome: true },
   ];
 
   return (
@@ -45,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
             </div>
             
             <p className="text-xs sm:text-sm text-[#EAE0D2]/80 font-light leading-relaxed max-w-sm">
-              Shree Shiv Shakti Art is a wooden handicrafts manufacturing and export house specializing in hand-carved furniture and authentic traditional Indian wooden artwork.
+              Shree Shiv Shakti Art is a wooden handicrafts manufacturing and export house based in Jodhpur, India, specializing in hand-carved furniture and authentic traditional wooden artwork.
             </p>
 
             <div className="pt-2 flex items-center gap-4 text-xs font-semibold uppercase tracking-wider text-[#C4975C]">
@@ -65,12 +63,22 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
             <ul className="space-y-2.5 text-xs text-[#EAE0D2]/80">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="hover:text-[#C4975C] transition-colors inline-block"
-                  >
-                    {link.name}
-                  </a>
+                  {link.name === 'Our Collections' ? (
+                    <button
+                      onClick={() => onNavigateCollections && onNavigateCollections('All Products')}
+                      className="hover:text-[#C4975C] transition-colors inline-block text-left cursor-pointer"
+                    >
+                      {link.name}
+                    </button>
+                  ) : (
+                    <a
+                      href={link.href}
+                      onClick={() => onNavigateHome && onNavigateHome()}
+                      className="hover:text-[#C4975C] transition-colors inline-block"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -81,14 +89,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
               Collections
             </h4>
             <ul className="space-y-2.5 text-xs text-[#EAE0D2]/80">
-              {collections.map((cat) => (
-                <li key={cat}>
-                  <a
-                    href="#collections"
-                    className="hover:text-[#C4975C] transition-colors inline-block"
+              {collectionsData.map((cat) => (
+                <li key={cat.id}>
+                  <button
+                    onClick={() => onNavigateCollections && onNavigateCollections(cat.title)}
+                    className="hover:text-[#C4975C] transition-colors inline-block text-left cursor-pointer"
                   >
-                    {cat}
-                  </a>
+                    {cat.title}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -109,7 +117,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
               </div>
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
-                <span>[Factory Address to be provided, India]</span>
+                <span>[Factory Address to be provided, Jodhpur, India]</span>
               </div>
             </div>
 
