@@ -18,7 +18,7 @@ export const Contact: React.FC<ContactProps> = ({ initialSubject = '' }) => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const officialMapsLink = "https://maps.app.goo.gl/nk1zxdCqnqGJkYSH6";
+  const officialMapsLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Plot No. 3, Khasra No. 54/5, Salawas Road, Jodhpur, Rajasthan – 342001, India");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -148,10 +148,24 @@ export const Contact: React.FC<ContactProps> = ({ initialSubject = '' }) => {
                   </div>
                   <div>
                     <p className="text-[11px] uppercase tracking-wider text-[#C4975C] font-semibold">Factory / Workshop Address</p>
-                    <p className="text-xs text-white mt-0.5 leading-relaxed">
-                      [Official Factory Address to be confirmed by client, India]
-                    </p>
-                    <p className="text-[11px] text-[#EAE0D2]/60">Configurable upon client confirmation</p>
+                    <a
+                      href={officialMapsLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-white hover:text-[#C4975C] transition-colors mt-0.5 leading-relaxed block break-words"
+                      title="Open Factory Location in Google Maps"
+                    >
+                      Plot No. 3, Khasra No. 54/5, Salawas Road, Jodhpur, Rajasthan – 342001, India.
+                    </a>
+                    <a
+                      href={officialMapsLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-[#C4975C] hover:underline inline-flex items-center gap-1 mt-1"
+                    >
+                      <span>View on Google Maps</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
                   </div>
                 </div>
               </div>
@@ -343,7 +357,7 @@ export const Contact: React.FC<ContactProps> = ({ initialSubject = '' }) => {
           <div className="relative w-full h-80 sm:h-96 md:h-[420px] bg-[#EAE0D2]/40 border border-[#EAE0D2] overflow-hidden">
             <iframe
               title="Shree Shiv Shakti Art Location Map"
-              src="https://maps.google.com/maps?q=Shree+Shiv+Shakti+Art+Boranada+Jodhpur&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              src={"https://maps.google.com/maps?q=" + encodeURIComponent("Plot No. 3, Khasra No. 54/5, Salawas Road, Jodhpur, Rajasthan 342001 India") + "&t=&z=15&ie=UTF8&iwloc=&output=embed"}
               className="w-full h-full border-0 filter contrast-[1.02]"
               loading="lazy"
               allowFullScreen

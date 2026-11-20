@@ -126,7 +126,15 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
-                <span>[Factory Address to be provided, Jodhpur, India]</span>
+                <a
+                  href={"https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("Plot No. 3, Khasra No. 54/5, Salawas Road, Jodhpur, Rajasthan – 342001, India")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#C4975C] transition-colors leading-relaxed break-words"
+                  title="Open Factory Location in Google Maps"
+                >
+                  Plot No. 3, Khasra No. 54/5, Salawas Road, Jodhpur, Rajasthan – 342001, India.
+                </a>
               </div>
             </div>
 
