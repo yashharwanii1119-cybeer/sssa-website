@@ -1,0 +1,130 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  EDITOR
+}
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id            String        @id @default(uuid())
+  slug          String        @unique
+  title         String
+  subtitle      String?
+  description   String?
+  image         String?
+  displayOrder  Int           @default(0)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  subcategories Subcategory[]
+  products      Product[]
+}
+
+model Subcategory {
+  id           String    @id @default(uuid())
+  slug         String    @unique
+  name         String
+  description  String?
+  image        String?
+  displayOrder Int       @default(0)
+  categoryId   String
+  category     Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  products     Product[]
+
+  @@index([categoryId])
+}
+
+model Product {
+  id                   String        @id @default(uuid())
+  sku                  String?       @unique
+  name                 String
+  slug                 String        @unique
+  status               ProductStatus @default(DRAFT)
+  isFeatured           Boolean       @default(false)
+
+  // Categorization
+  categoryId           String
+  category             Category      @relation(fields: [categoryId], references: [id])
+  subcategoryId        String
+  subcategory          Subcategory   @relation(fields: [subcategoryId], references: [id])
+
+  // Content
+  shortDescription     String?
+  description          String?
+
+  // Specifications
+  material             String?
+  woodType             String?
+  finish               String?
+  colour               String?
+  dimensions           String?
+  weight               String?
+  customizationAvailable Boolean     @default(true)
+  additionalSpecs      Json?
+
+  // Media
+  mainImage            String
+  mainImagePublicId    String?
+  images               ProductImage[]
+
+  tags                 String[]      @default([])
+
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([categoryId])
+  @@index([subcategoryId])
+  @@index([status])
+  @@index([isFeatured])
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  publicId  String?
+  altText   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+}
+
+model Enquiry {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  subject   String?
+  message   String
+  status    String   @default("UNREAD") // UNREAD, CONTACTED, RESOLVED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
