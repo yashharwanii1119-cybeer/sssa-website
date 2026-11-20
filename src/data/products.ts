@@ -253,14 +253,14 @@ export const productsData: ProductItem[] = [
     name: "Sculpted Hardwood Club Armchair",
     category: "Seating",
     categorySlug: "seating",
-    subcategory: "Sofas/Arm Chairs",
-    subcategorySlug: "sofas-arm-chairs",
+    subcategory: "Sofas",
+    subcategorySlug: "sofas",
     material: "Solid Acacia Frame & Linen Upholstery",
     finish: "Natural Matte Wood & Warm Cream",
     description: "Deep lounge club chair featuring broad carved timber armrests, down-blend cushions, and reinforced frame joints.",
     image: getAssetPath("/images/sub_sofas.jpg"),
     dimensions: "85 cm (W) x 88 cm (D) x 82 cm (H)",
-    tags: ["Seating", "Sofas/Arm Chairs", "Lounge", "Upholstered"]
+    tags: ["Seating", "Sofas", "Lounge", "Upholstered"]
   },
   {
     id: "prod-chr-01",
@@ -309,28 +309,28 @@ export const productsData: ProductItem[] = [
     name: "Imperial Indian Carved Day Bed",
     category: "Seating",
     categorySlug: "seating",
-    subcategory: "Day Beds",
-    subcategorySlug: "day-beds",
+    subcategory: "Daybeds",
+    subcategorySlug: "daybeds",
     material: "Solid Teak Wood & Cotton Mattress",
     finish: "Heritage Brown Tint",
     description: "Traditional diwan day bed with turned ball finials, open spindle balustrades, and removable firm bolster.",
     image: getAssetPath("/images/sub_daybeds.jpg"),
     dimensions: "190 cm (L) x 85 cm (W) x 75 cm (H)",
-    tags: ["Seating", "Day Beds", "Diwan", "Traditional"]
+    tags: ["Seating", "Daybeds", "Diwan", "Traditional"]
   },
   {
     id: "prod-pof-01",
     name: "Leather & Timber Footed Pouf",
     category: "Seating",
     categorySlug: "seating",
-    subcategory: "Poufs/Ottomans",
-    subcategorySlug: "poufs-ottomans",
+    subcategory: "Poufs",
+    subcategorySlug: "poufs",
     material: "Top-Grain Saddle Leather & Teak Feet",
     finish: "Aged Cognac & Dark Walnut",
     description: "Hand-stitched leather ottoman resting on turned solid wooden bun feet with dense supportive fill.",
     image: getAssetPath("/images/sub_poufs.jpg"),
     dimensions: "55 cm (W) x 55 cm (D) x 42 cm (H)",
-    tags: ["Seating", "Poufs/Ottomans", "Leather", "Footrest"]
+    tags: ["Seating", "Poufs", "Leather", "Footrest"]
   },
 
   // --- BAR FURNITURE ---
@@ -353,14 +353,14 @@ export const productsData: ProductItem[] = [
     name: "Swivel Saddle Solid Wood Bar Stool",
     category: "Bar Furniture",
     categorySlug: "bar-furniture",
-    subcategory: "Bar Stool/Chairs",
-    subcategorySlug: "bar-stool-chairs",
+    subcategory: "Bar Stools / Chairs",
+    subcategorySlug: "bar-stools-chairs",
     material: "Solid Hardwood Selection",
     finish: "Hand-Buffed Wax Patina",
     description: "Pub-height bar stool featuring full 360-degree silent swivel bearing, contoured saddle seat, and brass kick-plates.",
     image: getAssetPath("/images/sub_bar_stools.jpg"),
     dimensions: "42 cm (W) x 42 cm (D) x 76 cm (H)",
-    tags: ["Bar Furniture", "Bar Stool/Chairs", "Swivel", "Stool"]
+    tags: ["Bar Furniture", "Bar Stools / Chairs", "Swivel", "Stool"]
   },
   {
     id: "prod-bc-01",
@@ -411,28 +411,28 @@ export const productsData: ProductItem[] = [
     name: "Folding Outdoor Teak Garden Table",
     category: "Outdoor",
     categorySlug: "outdoor",
-    subcategory: "Garden Table",
-    subcategorySlug: "garden-table",
+    subcategory: "Garden Tables",
+    subcategorySlug: "garden-tables",
     material: "Grade-A Weatherproof Teak",
     finish: "Natural Outdoor Teak Shield",
     description: "Foldable solid teak round patio table with parasol hole and heavy-gauge brass folding mechanisms.",
     image: getAssetPath("/images/sub_garden_table.jpg"),
     dimensions: "120 cm (Dia) x 75 cm (H)",
-    tags: ["Outdoor", "Garden Table", "Folding", "Teak"]
+    tags: ["Outdoor", "Garden Tables", "Folding", "Teak"]
   },
   {
     id: "prod-gb-01",
     name: "Classic Veranda Slatted Garden Bench",
     category: "Outdoor",
     categorySlug: "outdoor",
-    subcategory: "Chair, Armchair, Bench",
-    subcategorySlug: "chair-armchair-bench",
+    subcategory: "Garden Benches",
+    subcategorySlug: "garden-benches",
     material: "Kiln-Dried Solid Teak",
     finish: "UV-Resistant Protective Sealant",
     description: "Timeless 3-seater garden bench with ergonomic curved seat slats and broad armrests built for all weather conditions.",
     image: getAssetPath("/images/sub_garden_benches.jpg"),
     dimensions: "155 cm (L) x 62 cm (D) x 92 cm (H)",
-    tags: ["Outdoor", "Chair, Armchair, Bench", "Garden Bench", "Weatherproof"]
+    tags: ["Outdoor", "Garden Benches", "Garden Bench", "Weatherproof"]
   },
   {
     id: "prod-gf-01",
