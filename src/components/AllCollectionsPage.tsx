@@ -6,7 +6,7 @@ import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface AllCollectionsPageProps {
   onBackToHome: () => void;
-  onOpenEnquiry: (productName?: string) => void;
+  onOpenEnquiry?: (productName?: string) => void;
   onViewProductModal: (product: ProductItem) => void;
   onSelectSubcategory?: (categorySlug: string, subcategorySlug: string) => void;
   onSelectCategory?: (categorySlug: string) => void;
@@ -21,6 +21,8 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
   initialCategorySlug = 'all',
   initialSubCategorySlug = '',
 }) => {
+  // Silence unused prop if onOpenEnquiry provided for backwards compat
+  void onOpenEnquiry;
   // Category and subcategory filtering states
   const [selectedCategorySlug, setSelectedCategorySlug] = useState<string>(initialCategorySlug);
   const [selectedSubCategorySlug, setSelectedSubCategorySlug] = useState<string>(initialSubCategorySlug);
@@ -601,7 +603,7 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
                   Show All Products
                 </button>
                 <button
-                  onClick={() => onOpenEnquiry(activeSubCategoryObj?.name || activeCategoryObj?.title || 'Custom Sourcing Inquiry')}
+                  onClick={() => openWhatsAppEnquiry(activeSubCategoryObj?.name || activeCategoryObj?.title || 'Custom Sourcing Inquiry')}
                   className="px-5 py-2.5 border border-[#382419] text-[#382419] text-xs uppercase tracking-widest font-semibold hover:bg-[#382419] hover:text-white transition-colors cursor-pointer"
                 >
                   Request Custom Quote

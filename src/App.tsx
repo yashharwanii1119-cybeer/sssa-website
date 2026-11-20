@@ -9,8 +9,10 @@ import { Footer } from './components/Footer';
 import { ProductModal } from './components/ProductModal';
 import { AllCollectionsPage } from './components/AllCollectionsPage';
 import { SubCategoryPage } from './components/SubCategoryPage';
+import { FloatingWhatsAppButton } from './components/FloatingWhatsAppButton';
 import { ProductItem } from './data/products';
 import { CollectionItem, collectionsData, getCategoryBySlug, getSubCategoryBySlug } from './data/collections';
+import { openWhatsAppEnquiry } from './utils/whatsapp';
 
 export function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'collections' | 'subcategory'>('home');
@@ -190,8 +192,16 @@ export function App() {
       <ProductModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
-        onEnquire={(prodName) => handleOpenEnquiry(`Product: ${prodName}`)}
+        onEnquire={(prodName) => {
+          if (selectedProduct) {
+            openWhatsAppEnquiry(selectedProduct);
+          } else {
+            openWhatsAppEnquiry(prodName);
+          }
+        }}
       />
+
+      <FloatingWhatsAppButton />
     </div>
   );
 }

@@ -2,9 +2,10 @@ import React from 'react';
 import { ArrowUp, Mail, MapPin, Globe, Shield, Sparkles } from 'lucide-react';
 import logoLight from '../assets/logo/sssa_logo_light.png';
 import { collectionsData } from '../data/collections';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface FooterProps {
-  onOpenEnquiry: (subject?: string) => void;
+  onOpenEnquiry?: (subject?: string) => void;
   onNavigateHome?: () => void;
   onNavigateCollections?: (categoryName?: string) => void;
 }
@@ -14,6 +15,7 @@ export const Footer: React.FC<FooterProps> = ({
   onNavigateHome,
   onNavigateCollections,
 }) => {
+  void onOpenEnquiry;
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -130,7 +132,7 @@ export const Footer: React.FC<FooterProps> = ({
 
             <div className="pt-2">
               <button
-                onClick={() => onOpenEnquiry('Export Quote Request')}
+                onClick={() => openWhatsAppEnquiry('Export Quote Request')}
                 className="w-full py-2.5 bg-[#A77B42] text-white text-xs uppercase tracking-widest font-semibold hover:bg-white hover:text-[#25221F] transition-colors cursor-pointer"
               >
                 Request Quotation

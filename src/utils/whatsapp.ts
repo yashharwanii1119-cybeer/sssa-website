@@ -4,19 +4,20 @@ export const WHATSAPP_NUMBER = '919929291844';
 
 /**
  * Generates dynamic WhatsApp click-to-chat URL for a specific product enquiry.
+ * Includes product name, category, subcategory, description (if available),
+ * and request for pricing, wood options, dimensions and customization details.
  */
-export function getProductWhatsAppUrl(product: Pick<ProductItem, 'name' | 'category' | 'subcategory'>): string {
-  const message = `Hello Shree Shiv Shakti Art,
+export function getProductWhatsAppUrl(
+  product: Pick<ProductItem, 'name' | 'category' | 'subcategory'> & { description?: string }
+): string {
+  const descPart = product.description ? `\nProduct Description: ${product.description}` : '';
 
-I am interested in enquiring about the following product:
+  const message = `Hello Shree Shiv Shakti Art! I am interested in your ${product.name}.
 
-Product Name: ${product.name}
 Category: ${product.category}
-Subcategory: ${product.subcategory}
+Subcategory: ${product.subcategory}${descPart}
 
-I would like to know more about its pricing, available customization options, materials and export availability.
-
-Please share further details.
+I would like to know its pricing, available wood options, dimensions and customization possibilities. Please share the quotation.
 
 Thank you.`;
 
@@ -24,14 +25,22 @@ Thank you.`;
 }
 
 /**
- * Generates WhatsApp click-to-chat URL for general enquiries.
+ * Generates WhatsApp click-to-chat URL for general enquiries & floating chat button.
  */
 export function getGeneralWhatsAppUrl(): string {
-  const message = `Hello Shree Shiv Shakti Art,
+  const message = `Hello Shree Shiv Shakti Art! I visited your website and would like to know more about your wooden furniture and handicraft collections. Could you please assist me with product details and pricing?`;
 
-I would like to know more about your wooden handicraft furniture collections and manufacturing services.
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
 
-Please get in touch with me.
+/**
+ * Generates WhatsApp click-to-chat URL for quote requests & custom inquiry CTAs.
+ */
+export function getQuoteWhatsAppUrl(topic?: string): string {
+  const topicLine = topic ? ` regarding: ${topic}` : '';
+  const message = `Hello Shree Shiv Shakti Art! I would like to request a quotation${topicLine}.
+
+Please share pricing, catalogue options, lead times, and custom manufacturing specifications for export.
 
 Thank you.`;
 
@@ -41,7 +50,17 @@ Thank you.`;
 /**
  * Opens a WhatsApp enquiry link in a new tab securely.
  */
-export function openWhatsAppEnquiry(product?: Pick<ProductItem, 'name' | 'category' | 'subcategory'> | null): void {
-  const url = product ? getProductWhatsAppUrl(product) : getGeneralWhatsAppUrl();
+export function openWhatsAppEnquiry(
+  productOrTopic?: (Pick<ProductItem, 'name' | 'category' | 'subcategory'> & { description?: string }) | string | null
+): void {
+  let url: string;
+  if (!productOrTopic) {
+    url = getGeneralWhatsAppUrl();
+  } else if (typeof productOrTopic === 'string') {
+    url = getQuoteWhatsAppUrl(productOrTopic);
+  } else {
+    url = getProductWhatsAppUrl(productOrTopic);
+  }
+
   window.open(url, '_blank', 'noopener,noreferrer');
 }

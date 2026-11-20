@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ArrowUpRight, Globe, Sparkles, ChevronDown, ChevronRight } from 'lucide-react';
 import logoLight from '../assets/logo/sssa_logo.png';
 import { collectionsData, CollectionItem } from '../data/collections';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface NavbarProps {
-  onOpenEnquiry: (productName?: string) => void;
+  onOpenEnquiry?: (productName?: string) => void;
   onNavigateHome?: () => void;
   onNavigateCollections?: (categorySlug?: string) => void;
   onNavigateSubcategory?: (categorySlug: string, subcategorySlug: string) => void;
@@ -18,6 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateSubcategory,
   currentPage = 'home',
 }) => {
+  void onOpenEnquiry;
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
@@ -354,7 +356,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Dedicated CTA Enquiry Button */}
               <div className="pl-3 xl:pl-5 border-l border-[#A77B42]/20">
                 <button
-                  onClick={() => onOpenEnquiry()}
+                  onClick={() => openWhatsAppEnquiry()}
                   className="group relative inline-flex items-center justify-center gap-2 px-5 xl:px-6 py-2.5 xl:py-3 overflow-hidden text-xs uppercase tracking-widest font-semibold text-white bg-[#382419] border border-[#382419] rounded-none shadow-sm hover:bg-[#A77B42] hover:border-[#A77B42] transition-all duration-300 cursor-pointer shrink-0"
                 >
                   <span>Request An Enquiry</span>
@@ -367,7 +369,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile / Tablet Menu Controls */}
             <div className="lg:hidden flex items-center gap-2.5">
               <button
-                onClick={() => onOpenEnquiry()}
+                onClick={() => openWhatsAppEnquiry()}
                 className="sm:hidden text-xs uppercase tracking-wider font-semibold px-3 py-1.5 bg-[#382419] text-white"
               >
                 Enquire
@@ -496,7 +498,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    onOpenEnquiry();
+                    openWhatsAppEnquiry();
                   }}
                   className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors"
                 >

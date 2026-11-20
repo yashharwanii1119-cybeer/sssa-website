@@ -2,12 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import emblem from '../assets/logo/sssa_emblem.png';
 import { getAssetPath } from '../utils/paths';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface HeroProps {
-  onOpenEnquiry: (topic?: string) => void;
+  onOpenEnquiry?: (topic?: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
+export const Hero: React.FC<HeroProps> = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
@@ -21,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
       btn1Text: 'Explore Our Collections',
       btn1Href: '#collections',
       btn2Text: 'Request An Enquiry',
-      btn2Action: () => onOpenEnquiry('Heritage & Craftsmanship Enquiry'),
+      btn2Action: () => openWhatsAppEnquiry('Heritage & Craftsmanship Enquiry'),
     },
     {
       id: 2,
@@ -45,7 +46,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenEnquiry }) => {
       btn1Text: 'Explore Our Capabilities',
       btn1Href: '#craftsmanship',
       btn2Text: 'Request An Enquiry',
-      btn2Action: () => onOpenEnquiry('B2B & International Export Enquiry'),
+      btn2Action: () => openWhatsAppEnquiry('B2B & International Export Enquiry'),
     },
   ];
 

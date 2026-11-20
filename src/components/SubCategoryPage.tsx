@@ -11,7 +11,7 @@ interface SubCategoryPageProps {
   onBackToCollections: () => void;
   onSelectCategory: (categorySlug: string) => void;
   onSelectOtherSubcategory: (categorySlug: string, subcategorySlug: string) => void;
-  onOpenEnquiry: (topic?: string) => void;
+  onOpenEnquiry?: (topic?: string) => void;
   onViewProductModal: (product: ProductItem) => void;
 }
 
@@ -25,6 +25,7 @@ export const SubCategoryPage: React.FC<SubCategoryPageProps> = ({
   onOpenEnquiry,
   onViewProductModal,
 }) => {
+  void onOpenEnquiry;
   const [searchQuery, setSearchQuery] = useState('');
 
   // Find products belonging to this subcategory
@@ -300,7 +301,7 @@ export const SubCategoryPage: React.FC<SubCategoryPageProps> = ({
                 </button>
               )}
               <button
-                onClick={() => onOpenEnquiry(`Custom Sourcing Request for ${subcategory.name}`)}
+                onClick={() => openWhatsAppEnquiry(`Custom Sourcing Request for ${subcategory.name}`)}
                 className="px-5 py-2.5 border border-[#382419] text-[#382419] text-xs uppercase tracking-widest font-semibold hover:bg-[#382419] hover:text-white transition-colors cursor-pointer"
               >
                 Request Custom Piece
@@ -319,7 +320,7 @@ export const SubCategoryPage: React.FC<SubCategoryPageProps> = ({
           </p>
           <div className="pt-2">
             <button
-              onClick={() => onOpenEnquiry(`Custom OEM Inquiry for ${subcategory.name}`)}
+              onClick={() => openWhatsAppEnquiry(`Custom OEM Inquiry for ${subcategory.name}`)}
               className="px-8 py-3.5 bg-[#382419] text-white text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors cursor-pointer"
             >
               Request Custom Quotation

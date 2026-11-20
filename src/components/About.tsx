@@ -2,12 +2,13 @@ import React from 'react';
 import { ArrowUpRight, Globe2, Sparkles, Layers, Sliders, CheckCircle2 } from 'lucide-react';
 import emblem from '../assets/logo/sssa_emblem.png';
 import { getAssetPath } from '../utils/paths';
+import { openWhatsAppEnquiry } from '../utils/whatsapp';
 
 interface AboutProps {
-  onOpenEnquiry: (topic?: string) => void;
+  onOpenEnquiry?: (topic?: string) => void;
 }
 
-export const About: React.FC<AboutProps> = ({ onOpenEnquiry }) => {
+export const About: React.FC<AboutProps> = () => {
   const woodMaterials = [
     {
       name: "Mango Wood",
@@ -423,7 +424,7 @@ export const About: React.FC<AboutProps> = ({ onOpenEnquiry }) => {
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <button
-              onClick={() => onOpenEnquiry('About Us Partnership Enquiry')}
+              onClick={() => openWhatsAppEnquiry('About Us Partnership Enquiry')}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors duration-300 shadow-md cursor-pointer"
             >
               <span>REQUEST AN ENQUIRY</span>
