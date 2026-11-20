@@ -40,8 +40,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   return (
     <>
       {/* Top Utility Bar: Slim antique-gold / warm-brown strip */}
-      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 border-b border-[#A77B42]/25 relative z-50">
-        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-6 tracking-wider text-[11px] sm:text-xs">
+      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 sm:px-6 lg:px-8 border-b border-[#A77B42]/25 relative z-50">
+        <div className="max-w-[1440px] mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-6 tracking-wider text-[11px] sm:text-xs">
           
           {/* Highlight 1: Premium Wooden Handicrafts */}
           <div className="flex items-center gap-2">
@@ -87,120 +87,125 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
             ? 'bg-[#F7F3EC]/95 backdrop-blur-md shadow-md py-3 sm:py-3.5 border-b border-[#EAE0D2]'
-            : 'bg-[#F7F3EC]/90 backdrop-blur-sm py-3.5 sm:py-4.5 border-b border-transparent'
+            : 'bg-[#F7F3EC]/95 backdrop-blur-sm py-4 sm:py-5 border-b border-[#EAE0D2]/40'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            {/* Logo on Left */}
-            <a href="#home" className="flex items-center gap-3 group shrink-0">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="flex items-center justify-between gap-6 xl:gap-10">
+            {/* Logo on Left - Increased size by 15-20% with generous breathing room */}
+            <a href="#home" className="flex items-center gap-3 group shrink-0 py-0.5">
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art - Wooden Handicrafts Manufacturing and Export House"
-                className="h-14 sm:h-18 md:h-20 w-auto max-w-[280px] sm:max-w-[360px] md:max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.01]"
+                className="h-16 sm:h-20 md:h-[88px] lg:h-[92px] w-auto max-w-[300px] sm:max-w-[390px] md:max-w-[460px] lg:max-w-[500px] object-contain transition-transform duration-300 group-hover:scale-[1.01]"
               />
             </a>
 
-            {/* Navigation Links (Desktop) */}
-            <div className="hidden lg:flex items-center space-x-8">
-              <a
-                href="#home"
-                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-              >
-                Home
-              </a>
-
-              <a
-                href="#about"
-                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-              >
-                About Us
-              </a>
-
-              {/* Collections with Dropdown */}
-              <div
-                className="relative"
-                ref={dropdownRef}
-                onMouseEnter={() => setCollectionsDropdownOpen(true)}
-                onMouseLeave={() => setCollectionsDropdownOpen(false)}
-              >
+            {/* Desktop Navigation Links + CTA Container on Right */}
+            <div className="hidden lg:flex items-center justify-end flex-1 gap-8 xl:gap-11">
+              
+              {/* Navigation Items with relaxed, airy horizontal spacing */}
+              <div className="flex items-center space-x-7 xl:space-x-10">
                 <a
-                  href="#collections"
-                  className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-1.5 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-                  onClick={() => setCollectionsDropdownOpen(false)}
+                  href="#home"
+                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
                 >
-                  <span>Our Collections</span>
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${collectionsDropdownOpen ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
+                  Home
                 </a>
 
-                {/* Dropdown Menu */}
-                {collectionsDropdownOpen && (
-                  <div className="absolute top-full left-0 pt-2 w-80 z-50 animate-fadeIn">
-                    <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none py-3 px-2 backdrop-blur-sm">
-                      <div className="px-3 pb-2 mb-2 border-b border-[#EAE0D2] text-[10px] uppercase font-bold tracking-widest text-[#A77B42]">
-                        Export &amp; Trade Collections
-                      </div>
-                      <div className="space-y-1">
-                        {collectionsData.map((cat) => (
+                <a
+                  href="#about"
+                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                >
+                  About Us
+                </a>
+
+                {/* Collections with Dropdown */}
+                <div
+                  className="relative"
+                  ref={dropdownRef}
+                  onMouseEnter={() => setCollectionsDropdownOpen(true)}
+                  onMouseLeave={() => setCollectionsDropdownOpen(false)}
+                >
+                  <a
+                    href="#collections"
+                    className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                    onClick={() => setCollectionsDropdownOpen(false)}
+                  >
+                    <span>Our Collections</span>
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${collectionsDropdownOpen ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
+                  </a>
+
+                  {/* Dropdown Menu */}
+                  {collectionsDropdownOpen && (
+                    <div className="absolute top-full left-0 pt-3 w-80 z-50 animate-fadeIn">
+                      <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none py-3 px-2 backdrop-blur-sm">
+                        <div className="px-3 pb-2 mb-2 border-b border-[#EAE0D2] text-[10px] uppercase font-bold tracking-widest text-[#A77B42]">
+                          Export &amp; Trade Collections
+                        </div>
+                        <div className="space-y-1">
+                          {collectionsData.map((cat) => (
+                            <a
+                              key={cat.id}
+                              href={`#collections`}
+                              onClick={() => setCollectionsDropdownOpen(false)}
+                              className="block px-3 py-2 rounded-none hover:bg-[#F3ECE1] transition-colors group/item"
+                            >
+                              <div className="text-xs font-semibold text-[#25221F] group-hover/item:text-[#A77B42] transition-colors flex items-center justify-between">
+                                <span>{cat.title}</span>
+                                <span className="text-[10px] text-[#A77B42] font-normal opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                              </div>
+                              <div className="text-[11px] text-[#7D6E63] line-clamp-1 mt-0.5 font-light">
+                                {cat.subtitle} • {cat.itemCount}
+                              </div>
+                            </a>
+                          ))}
+                        </div>
+                        <div className="mt-2 pt-2 border-t border-[#EAE0D2] px-3">
                           <a
-                            key={cat.id}
-                            href={`#collections`}
+                            href="#collections"
                             onClick={() => setCollectionsDropdownOpen(false)}
-                            className="block px-3 py-2 rounded-none hover:bg-[#F3ECE1] transition-colors group/item"
+                            className="text-[11px] font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between"
                           >
-                            <div className="text-xs font-semibold text-[#25221F] group-hover/item:text-[#A77B42] transition-colors flex items-center justify-between">
-                              <span>{cat.title}</span>
-                              <span className="text-[10px] text-[#A77B42] font-normal opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
-                            </div>
-                            <div className="text-[11px] text-[#7D6E63] line-clamp-1 mt-0.5 font-light">
-                              {cat.subtitle} • {cat.itemCount}
-                            </div>
+                            <span>Explore All Collections</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
                           </a>
-                        ))}
-                      </div>
-                      <div className="mt-2 pt-2 border-t border-[#EAE0D2] px-3">
-                        <a
-                          href="#collections"
-                          onClick={() => setCollectionsDropdownOpen(false)}
-                          className="text-[11px] font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between"
-                        >
-                          <span>Explore All Collections</span>
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+
+                <a
+                  href="#craftsmanship"
+                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                >
+                  Craftsmanship
+                </a>
+
+                <a
+                  href="#contact"
+                  className="text-[13px] uppercase font-medium tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                >
+                  Contact
+                </a>
               </div>
 
-              <a
-                href="#craftsmanship"
-                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-              >
-                Craftsmanship
-              </a>
+              {/* Distinct separation & CTA Enquiry Button */}
+              <div className="pl-3 xl:pl-5 border-l border-[#A77B42]/20">
+                <button
+                  onClick={() => onOpenEnquiry()}
+                  className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 overflow-hidden text-xs uppercase tracking-widest font-semibold text-white bg-[#382419] border border-[#382419] rounded-none shadow-sm hover:bg-[#A77B42] hover:border-[#A77B42] transition-all duration-300 cursor-pointer shrink-0"
+                >
+                  <span>Request An Enquiry</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </button>
+              </div>
 
-              <a
-                href="#contact"
-                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
-              >
-                Contact
-              </a>
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden sm:flex items-center gap-3">
-              <button
-                onClick={() => onOpenEnquiry()}
-                className="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 overflow-hidden text-xs uppercase tracking-widest font-semibold text-white bg-[#382419] border border-[#382419] rounded-none shadow-sm hover:bg-[#A77B42] hover:border-[#A77B42] transition-all duration-300 cursor-pointer"
-              >
-                <span>Request An Enquiry</span>
-                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-2">
+            {/* Mobile / Tablet Menu Controls */}
+            <div className="lg:hidden flex items-center gap-2.5">
               <button
                 onClick={() => onOpenEnquiry()}
                 className="sm:hidden text-xs uppercase tracking-wider font-semibold px-3 py-1.5 bg-[#382419] text-white"
@@ -225,7 +230,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <a
                 href="#home"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+                className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 Home
               </a>
@@ -233,7 +238,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <a
                 href="#about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+                className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 About Us
               </a>
@@ -242,7 +247,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <div className="border-b border-[#EAE0D2]/50">
                 <button
                   onClick={() => setMobileCollectionsOpen(!mobileCollectionsOpen)}
-                  className="w-full flex items-center justify-between text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] hover:text-[#A77B42] transition-all text-left"
+                  className="w-full flex items-center justify-between text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] hover:text-[#A77B42] transition-all text-left"
                 >
                   <span>Our Collections</span>
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileCollectionsOpen ? 'rotate-180 text-[#A77B42]' : ''}`} />
@@ -266,7 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <a
                 href="#craftsmanship"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+                className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 Craftsmanship
               </a>
@@ -274,7 +279,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               <a
                 href="#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+                className="text-sm uppercase tracking-widest font-medium py-2.5 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
               >
                 Contact
               </a>
@@ -285,7 +290,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                     setMobileMenuOpen(false);
                     onOpenEnquiry();
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-3 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors"
                 >
                   <span>Request An Enquiry</span>
                   <ArrowUpRight className="w-4 h-4" />
