@@ -113,7 +113,14 @@ export const Footer: React.FC<FooterProps> = ({
               </div>
               <div className="flex items-start gap-2.5">
                 <Globe className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />
-                <span>Export &amp; Trade Inquiries</span>
+                <a
+                  href="https://wa.me/919929291844"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#C4975C] transition-colors"
+                >
+                  WhatsApp: +91 99292 91844
+                </a>
               </div>
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#C4975C] shrink-0 mt-0.5" />

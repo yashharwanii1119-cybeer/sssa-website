@@ -122,15 +122,22 @@ export const Contact: React.FC<ContactProps> = ({ initialSubject = '' }) => {
                   </div>
                 </div>
 
-                {/* Business Phone */}
+                {/* Business Phone & WhatsApp */}
                 <div className="flex items-start gap-4">
                   <div className="w-9 h-9 rounded-none bg-[#271911] border border-[#A77B42]/40 flex items-center justify-center shrink-0 text-[#C4975C]">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider text-[#C4975C] font-semibold">Business Phone</p>
-                    <p className="font-mono text-xs text-white mt-0.5">[Client Phone to be provided]</p>
-                    <p className="text-[11px] text-[#EAE0D2]/60">Configurable upon client confirmation</p>
+                    <p className="text-[11px] uppercase tracking-wider text-[#C4975C] font-semibold">Business Phone &amp; WhatsApp</p>
+                    <a
+                      href="https://wa.me/919929291844"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-xs text-white hover:text-[#C4975C] transition-colors mt-0.5 inline-block"
+                    >
+                      +91 99292 91844
+                    </a>
+                    <p className="text-[11px] text-[#EAE0D2]/60">Direct WhatsApp &amp; Export Inquiries</p>
                   </div>
                 </div>
 
