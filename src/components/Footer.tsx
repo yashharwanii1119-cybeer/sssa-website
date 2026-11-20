@@ -16,7 +16,6 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
     { name: 'About Us', href: '#about' },
     { name: 'Our Collections', href: '#collections' },
     { name: 'Craftsmanship', href: '#craftsmanship' },
-    { name: 'Why Choose Us', href: '#why-us' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -41,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEnquiry }) => {
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art"
-                className="h-13 sm:h-15 w-auto object-contain"
+                className="h-16 sm:h-20 w-auto max-w-[320px] sm:max-w-[380px] object-contain"
               />
             </div>
             

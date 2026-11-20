@@ -27,7 +27,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
     { name: 'About Us', href: '#about' },
     { name: 'Our Collections', href: '#collections' },
     { name: 'Craftsmanship', href: '#craftsmanship' },
-    { name: 'Why Us', href: '#why-us' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -53,8 +52,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
       <nav
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#F7F3EC]/95 backdrop-blur-md shadow-md py-3 border-b border-[#EAE0D2]'
-            : 'bg-[#F7F3EC]/80 backdrop-blur-sm py-4 border-b border-transparent'
+            ? 'bg-[#F7F3EC]/95 backdrop-blur-md shadow-md py-3 sm:py-3.5 border-b border-[#EAE0D2]'
+            : 'bg-[#F7F3EC]/90 backdrop-blur-sm py-3.5 sm:py-4.5 border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,12 +61,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
             <a href="#home" className="flex items-center gap-3 group">
               <img
                 src={logoLight}
-                alt="Shree Shiv Shakti Art"
-                className="h-11 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                alt="Shree Shiv Shakti Art - Wooden Handicrafts Manufacturing and Export House"
+                className="h-14 sm:h-18 md:h-20 w-auto max-w-[280px] sm:max-w-[360px] md:max-w-[420px] object-contain transition-transform duration-300 group-hover:scale-[1.01]"
               />
             </a>
 
-            <div className="hidden lg:flex items-center space-x-8">
+            <div className="hidden lg:flex items-center space-x-9">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
