@@ -27,6 +27,7 @@ const allowedOrigins = [
   'http://localhost:5174',
   'https://yashharwanii1119-cybeer.github.io',
   'https://admin.shreeshivshaktiart.com',
+  'https://sssa-website.vercel.app',
   ...(process.env.CLIENT_ORIGIN ? process.env.CLIENT_ORIGIN.split(',') : []),
   ...(process.env.ADMIN_ORIGIN ? process.env.ADMIN_ORIGIN.split(',') : [])
 ];
