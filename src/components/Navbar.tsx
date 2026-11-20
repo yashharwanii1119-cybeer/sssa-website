@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowUpRight, Globe, Mail } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Menu, X, ArrowUpRight, Globe, Sparkles, ChevronDown } from 'lucide-react';
 import logoLight from '../assets/logo/sssa_logo.png';
+import { collectionsData } from '../data/collections';
 
 interface NavbarProps {
   onOpenEnquiry: (productName?: string) => void;
@@ -9,6 +10,9 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [collectionsDropdownOpen, setCollectionsDropdownOpen] = useState(false);
+  const [mobileCollectionsOpen, setMobileCollectionsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,33 +26,63 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Our Collections', href: '#collections' },
-    { name: 'Craftsmanship', href: '#craftsmanship' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setCollectionsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
-      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 border-b border-[#A77B42]/20 relative z-50">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-1 sm:gap-4 tracking-wider uppercase">
+      {/* Top Utility Bar: Slim antique-gold / warm-brown strip */}
+      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 border-b border-[#A77B42]/25 relative z-50">
+        <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-6 tracking-wider text-[11px] sm:text-xs">
+          
+          {/* Highlight 1: Premium Wooden Handicrafts */}
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#A77B42] inline-block animate-pulse"></span>
-            <span>Wooden Handicrafts Manufacturing &amp; Global Export House</span>
-          </div>
-          <div className="flex items-center gap-5 text-[11px] text-[#EAE0D2]/90 normal-case tracking-normal">
-            <span className="hidden md:inline-flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-[#A77B42]" /> Serving International B2B Importers &amp; Designers
+            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+            <span className="font-semibold uppercase tracking-widest text-[#F7F3EC]">
+              Premium Wooden Handicrafts
             </span>
-            <a href="#contact" className="hover:text-[#A77B42] transition-colors flex items-center gap-1 font-medium">
-              <Mail className="w-3 h-3 text-[#A77B42]" /> Export Inquiries Welcome
+          </div>
+
+          {/* Highlight 2: Made in India */}
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#A77B42]/30 text-[10px] text-[#D4AF37] font-bold border border-[#A77B42]/60">
+              🇮🇳
+            </span>
+            <span className="font-semibold tracking-wider text-[#F7F3EC]">
+              Made in India
+            </span>
+            <span className="hidden sm:inline text-[#A77B42]/70">•</span>
+            <span className="hidden sm:inline text-[#EAE0D2]/80 text-[11px] normal-case">
+              Generations of Authentic Woodcraft
+            </span>
+          </div>
+
+          {/* Highlight 3: Worldwide B2B & Export Enquiries */}
+          <div className="flex items-center gap-2">
+            <Globe className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+            <span className="font-semibold tracking-wide text-[#F7F3EC]">
+              Worldwide B2B &amp; Export Enquiries
+            </span>
+            <a
+              href="#contact"
+              className="ml-1 text-[#D4AF37] hover:text-white underline underline-offset-2 transition-colors font-medium hidden md:inline"
+            >
+              Contact Desk
             </a>
           </div>
+
         </div>
       </div>
 
+      {/* Main Navigation Row: Clean ivory background */}
       <nav
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
@@ -58,7 +92,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <a href="#home" className="flex items-center gap-3 group">
+            {/* Logo on Left */}
+            <a href="#home" className="flex items-center gap-3 group shrink-0">
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art - Wooden Handicrafts Manufacturing and Export House"
@@ -66,18 +101,94 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               />
             </a>
 
-            <div className="hidden lg:flex items-center space-x-9">
-              {navLinks.map((link) => (
+            {/* Navigation Links (Desktop) */}
+            <div className="hidden lg:flex items-center space-x-8">
+              <a
+                href="#home"
+                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+              >
+                Home
+              </a>
+
+              <a
+                href="#about"
+                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+              >
+                About Us
+              </a>
+
+              {/* Collections with Dropdown */}
+              <div
+                className="relative"
+                ref={dropdownRef}
+                onMouseEnter={() => setCollectionsDropdownOpen(true)}
+                onMouseLeave={() => setCollectionsDropdownOpen(false)}
+              >
                 <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                  href="#collections"
+                  className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-1.5 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+                  onClick={() => setCollectionsDropdownOpen(false)}
                 >
-                  {link.name}
+                  <span>Our Collections</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${collectionsDropdownOpen ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
                 </a>
-              ))}
+
+                {/* Dropdown Menu */}
+                {collectionsDropdownOpen && (
+                  <div className="absolute top-full left-0 pt-2 w-80 z-50 animate-fadeIn">
+                    <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none py-3 px-2 backdrop-blur-sm">
+                      <div className="px-3 pb-2 mb-2 border-b border-[#EAE0D2] text-[10px] uppercase font-bold tracking-widest text-[#A77B42]">
+                        Export &amp; Trade Collections
+                      </div>
+                      <div className="space-y-1">
+                        {collectionsData.map((cat) => (
+                          <a
+                            key={cat.id}
+                            href={`#collections`}
+                            onClick={() => setCollectionsDropdownOpen(false)}
+                            className="block px-3 py-2 rounded-none hover:bg-[#F3ECE1] transition-colors group/item"
+                          >
+                            <div className="text-xs font-semibold text-[#25221F] group-hover/item:text-[#A77B42] transition-colors flex items-center justify-between">
+                              <span>{cat.title}</span>
+                              <span className="text-[10px] text-[#A77B42] font-normal opacity-0 group-hover/item:opacity-100 transition-opacity">→</span>
+                            </div>
+                            <div className="text-[11px] text-[#7D6E63] line-clamp-1 mt-0.5 font-light">
+                              {cat.subtitle} • {cat.itemCount}
+                            </div>
+                          </a>
+                        ))}
+                      </div>
+                      <div className="mt-2 pt-2 border-t border-[#EAE0D2] px-3">
+                        <a
+                          href="#collections"
+                          onClick={() => setCollectionsDropdownOpen(false)}
+                          className="text-[11px] font-semibold text-[#382419] hover:text-[#A77B42] flex items-center justify-between"
+                        >
+                          <span>Explore All Collections</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <a
+                href="#craftsmanship"
+                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+              >
+                Craftsmanship
+              </a>
+
+              <a
+                href="#contact"
+                className="text-xs uppercase font-medium tracking-[0.16em] text-[#25221F] hover:text-[#A77B42] transition-colors relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300"
+              >
+                Contact
+              </a>
             </div>
 
+            {/* CTA Button */}
             <div className="hidden sm:flex items-center gap-3">
               <button
                 onClick={() => onOpenEnquiry()}
@@ -88,6 +199,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
               </button>
             </div>
 
+            {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-2">
               <button
                 onClick={() => onOpenEnquiry()}
@@ -106,19 +218,67 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
           </div>
         </div>
 
+        {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="lg:hidden bg-[#F7F3EC] border-b border-[#EAE0D2] shadow-xl px-4 pt-3 pb-6 transition-all duration-300">
-            <div className="flex flex-col space-y-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] hover:pl-4 transition-all"
+            <div className="flex flex-col space-y-2">
+              <a
+                href="#home"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+              >
+                Home
+              </a>
+
+              <a
+                href="#about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+              >
+                About Us
+              </a>
+
+              {/* Mobile Collections Expandable */}
+              <div className="border-b border-[#EAE0D2]/50">
+                <button
+                  onClick={() => setMobileCollectionsOpen(!mobileCollectionsOpen)}
+                  className="w-full flex items-center justify-between text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] hover:text-[#A77B42] transition-all text-left"
                 >
-                  {link.name}
-                </a>
-              ))}
+                  <span>Our Collections</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileCollectionsOpen ? 'rotate-180 text-[#A77B42]' : ''}`} />
+                </button>
+                {mobileCollectionsOpen && (
+                  <div className="pl-4 pr-2 pb-2 space-y-1.5 bg-[#EAE0D2]/30 py-2 my-1">
+                    {collectionsData.map((cat) => (
+                      <a
+                        key={cat.id}
+                        href="#collections"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block py-1.5 text-xs text-[#25221F] hover:text-[#A77B42] font-medium"
+                      >
+                        • {cat.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <a
+                href="#craftsmanship"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+              >
+                Craftsmanship
+              </a>
+
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm uppercase tracking-widest font-medium py-2 px-2 text-[#25221F] border-b border-[#EAE0D2]/50 hover:text-[#A77B42] transition-all"
+              >
+                Contact
+              </a>
+
               <div className="pt-3">
                 <button
                   onClick={() => {
@@ -127,7 +287,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenEnquiry }) => {
                   }}
                   className="w-full flex items-center justify-center gap-2 py-3 bg-[#382419] text-[#F7F3EC] text-xs uppercase tracking-widest font-semibold hover:bg-[#A77B42] transition-colors"
                 >
-                  <span>Request A Business Enquiry</span>
+                  <span>Request An Enquiry</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </button>
               </div>
