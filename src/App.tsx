@@ -9,23 +9,58 @@ import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { ProductModal } from './components/ProductModal';
 import { AllCollectionsPage } from './components/AllCollectionsPage';
+import { SubCategoryPage } from './components/SubCategoryPage';
 import { ProductItem } from './data/products';
-import { CollectionItem } from './data/collections';
+import { CollectionItem, collectionsData, getCategoryBySlug, getSubCategoryBySlug } from './data/collections';
 
 export function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'collections'>('home');
-  const [selectedCategory, setSelectedCategory] = useState<string>('All Products');
+  const [currentPage, setCurrentPage] = useState<'home' | 'collections' | 'subcategory'>('home');
+  const [currentCategorySlug, setCurrentCategorySlug] = useState<string>('all');
+  const [currentSubCategorySlug, setCurrentSubCategorySlug] = useState<string>('');
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [enquiryInitialSubject, setEnquiryInitialSubject] = useState<string>('');
 
   // Handle browser URL hash or popstate navigation
+  // Formats supported:
+  // #home
+  // #collections or #all-collections
+  // #collections/living-room
+  // #collections/living-room/cabinets
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash === '#all-collections' || hash.startsWith('#collections-page')) {
-        setCurrentPage('collections');
-      } else {
+      const hash = window.location.hash.replace(/^#/, '');
+
+      if (!hash || hash === 'home' || hash === 'about' || hash === 'craftsmanship' || hash === 'contact') {
         setCurrentPage('home');
+        return;
+      }
+
+      if (hash === 'collections' || hash === 'all-collections') {
+        setCurrentPage('collections');
+        setCurrentCategorySlug('all');
+        return;
+      }
+
+      // Check for /collections/:category or /collections/:category/:subcategory
+      if (hash.startsWith('collections/')) {
+        const parts = hash.split('/').filter(Boolean); // ['collections', 'living-room', 'cabinets']
+        if (parts.length === 2) {
+          // Category page
+          setCurrentPage('collections');
+          setCurrentCategorySlug(parts[1]);
+        } else if (parts.length >= 3) {
+          // Subcategory page
+          const cat = getCategoryBySlug(parts[1]);
+          const sub = getSubCategoryBySlug(parts[1], parts[2]);
+          if (cat && sub) {
+            setCurrentPage('subcategory');
+            setCurrentCategorySlug(parts[1]);
+            setCurrentSubCategorySlug(parts[2]);
+          } else {
+            setCurrentPage('collections');
+            setCurrentCategorySlug(parts[1]);
+          }
+        }
       }
     };
 
@@ -39,7 +74,7 @@ export function App() {
     if (subject) {
       setEnquiryInitialSubject(subject);
     }
-    // If on collections page, switch to home to scroll to contact section
+    // If not on home page, switch to home to scroll to contact section
     if (currentPage !== 'home') {
       setCurrentPage('home');
       window.history.pushState(null, '', '#contact');
@@ -58,11 +93,29 @@ export function App() {
     }
   };
 
-  const handleNavigateAllCollections = (categoryName: string = 'All Products') => {
-    setSelectedCategory(categoryName);
+  const handleNavigateAllCollections = (categorySlug: string = 'all') => {
     setCurrentPage('collections');
-    window.history.pushState(null, '', '#all-collections');
+    setCurrentCategorySlug(categorySlug);
+    if (categorySlug === 'all') {
+      window.history.pushState(null, '', '#collections');
+    } else {
+      window.history.pushState(null, '', `#collections/${categorySlug}`);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateSubcategory = (categorySlug: string, subcategorySlug: string) => {
+    const cat = getCategoryBySlug(categorySlug);
+    const sub = getSubCategoryBySlug(categorySlug, subcategorySlug);
+    if (cat && sub) {
+      setCurrentCategorySlug(categorySlug);
+      setCurrentSubCategorySlug(subcategorySlug);
+      setCurrentPage('subcategory');
+      window.history.pushState(null, '', `#collections/${categorySlug}/${subcategorySlug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      handleNavigateAllCollections(categorySlug);
+    }
   };
 
   const handleNavigateHome = () => {
@@ -72,8 +125,13 @@ export function App() {
   };
 
   const handleSelectCollection = (collection: CollectionItem) => {
-    handleNavigateAllCollections(collection.title);
+    handleNavigateAllCollections(collection.slug);
   };
+
+  const currentCategoryObj = getCategoryBySlug(currentCategorySlug) || collectionsData[0];
+  const currentSubCategoryObj =
+    getSubCategoryBySlug(currentCategorySlug, currentSubCategorySlug) ||
+    currentCategoryObj.subcategories[0];
 
   return (
     <div className="min-h-screen bg-[#F7F3EC] text-[#25221F] selection:bg-[#A77B42] selection:text-white flex flex-col font-sans">
@@ -81,17 +139,18 @@ export function App() {
         onOpenEnquiry={handleOpenEnquiry}
         onNavigateHome={handleNavigateHome}
         onNavigateCollections={handleNavigateAllCollections}
+        onNavigateSubcategory={handleNavigateSubcategory}
         currentPage={currentPage}
       />
 
       <main className="flex-grow">
-        {currentPage === 'home' ? (
+        {currentPage === 'home' && (
           <>
             <Hero onOpenEnquiry={handleOpenEnquiry} />
             <About onOpenEnquiry={handleOpenEnquiry} />
             <Collections
               onSelectCollection={handleSelectCollection}
-              onNavigateAllCollections={() => handleNavigateAllCollections('All Products')}
+              onNavigateAllCollections={() => handleNavigateAllCollections('all')}
             />
             <FeaturedProducts
               onOpenEnquiry={handleOpenEnquiry}
@@ -100,12 +159,29 @@ export function App() {
             <Craftsmanship />
             <Contact initialSubject={enquiryInitialSubject} />
           </>
-        ) : (
+        )}
+
+        {currentPage === 'collections' && (
           <AllCollectionsPage
             onBackToHome={handleNavigateHome}
             onOpenEnquiry={handleOpenEnquiry}
             onViewProductModal={(prod) => setSelectedProduct(prod)}
-            initialCategory={selectedCategory}
+            onSelectCategory={handleNavigateAllCollections}
+            onSelectSubcategory={handleNavigateSubcategory}
+            initialCategorySlug={currentCategorySlug}
+          />
+        )}
+
+        {currentPage === 'subcategory' && (
+          <SubCategoryPage
+            category={currentCategoryObj}
+            subcategory={currentSubCategoryObj}
+            onBackToHome={handleNavigateHome}
+            onBackToCollections={() => handleNavigateAllCollections('all')}
+            onSelectCategory={handleNavigateAllCollections}
+            onSelectOtherSubcategory={handleNavigateSubcategory}
+            onOpenEnquiry={handleOpenEnquiry}
+            onViewProductModal={(prod) => setSelectedProduct(prod)}
           />
         )}
       </main>
