@@ -65,9 +65,6 @@ export const Hero: React.FC<HeroProps> = () => {
   }, []);
 
   // Automatic slide rotation every exactly 5 seconds (5000ms).
-  // Changing currentSlide resets this 5-second interval cleanly.
-  // Manual clicks on next/prev/indicator trigger currentSlide update, which cleans up
-  // the existing interval and establishes a new full 5-second countdown.
   useEffect(() => {
     const timer = setInterval(() => {
       nextSlide();
@@ -81,7 +78,7 @@ export const Hero: React.FC<HeroProps> = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] sm:min-h-[94vh] flex items-center justify-center overflow-hidden bg-[#271911] select-none"
+      className="relative min-h-[85vh] sm:min-h-[92vh] md:min-h-[94vh] flex items-center justify-center overflow-hidden bg-[#271911] select-none py-14 sm:py-20"
     >
       {/* Slides Background Images */}
       {slides.map((slide, index) => {
@@ -111,8 +108,8 @@ export const Hero: React.FC<HeroProps> = () => {
       {/* Decorative Gold Frame Border */}
       <div className="absolute inset-4 sm:inset-8 border border-[#A77B42]/20 pointer-events-none z-20 hidden md:block" />
 
-      {/* Content Container with smooth fade & subtle horizontal shift */}
-      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center text-[#F7F3EC]">
+      {/* Content Container: comfortable horizontal padding to never overlap arrow buttons */}
+      <div className="relative z-20 max-w-5xl mx-auto px-12 sm:px-16 md:px-20 py-8 sm:py-16 text-center text-[#F7F3EC] w-full">
         {slides.map((slide, index) => {
           const isActive = index === currentSlide;
           return (
@@ -125,37 +122,37 @@ export const Hero: React.FC<HeroProps> = () => {
               }`}
             >
               {/* Emblem & Eyebrow */}
-              <div className="inline-flex flex-col items-center justify-center mb-5 sm:mb-6">
+              <div className="inline-flex flex-col items-center justify-center mb-4 sm:mb-6">
                 <img
                   src={emblem}
                   alt="SSSA Emblem"
-                  className="w-11 sm:w-13 h-11 sm:h-13 object-contain mb-3 drop-shadow-md filter brightness-110"
+                  className="w-10 sm:w-13 h-10 sm:h-13 object-contain mb-2.5 sm:mb-3 drop-shadow-md filter brightness-110"
                 />
-                <div className="flex items-center gap-3">
-                  <span className="w-8 h-[1px] bg-[#A77B42]"></span>
-                  <span className="text-xs sm:text-sm font-semibold tracking-[0.28em] text-[#C4975C] uppercase">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <span className="w-5 sm:w-8 h-[1px] bg-[#A77B42]"></span>
+                  <span className="text-[10px] xs:text-xs sm:text-sm font-semibold tracking-[0.2em] sm:tracking-[0.28em] text-[#C4975C] uppercase">
                     {slide.eyebrow}
                   </span>
-                  <span className="w-8 h-[1px] bg-[#A77B42]"></span>
+                  <span className="w-5 sm:w-8 h-[1px] bg-[#A77B42]"></span>
                 </div>
               </div>
 
-              {/* Headline */}
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal text-white tracking-tight leading-[1.12] mb-6 drop-shadow-md">
+              {/* Headline: fluid typography scaling cleanly on mobile (text-2xl xs:text-3xl sm:text-5xl) */}
+              <h1 className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-normal text-white tracking-tight leading-[1.18] sm:leading-[1.12] mb-4 sm:mb-6 drop-shadow-md">
                 {slide.headline}
               </h1>
 
               {/* Supporting Text */}
-              <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-[#EAE0D2]/90 font-light leading-relaxed mb-10">
+              <p className="max-w-2xl mx-auto text-xs xs:text-sm sm:text-base md:text-lg text-[#EAE0D2]/90 font-light leading-relaxed mb-6 sm:mb-10 px-1 sm:px-0">
                 {slide.supporting}
               </p>
 
-              {/* Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              {/* Buttons: Clean stack on small screens, row on sm+ */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 w-full max-w-xs sm:max-w-none mx-auto">
                 {slide.btn1Href ? (
                   <a
                     href={slide.btn1Href}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#25221F] bg-[#F7F3EC] hover:bg-[#A77B42] hover:text-white transition-all duration-300 shadow-xl cursor-pointer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#25221F] bg-[#F7F3EC] hover:bg-[#A77B42] hover:text-white transition-all duration-300 shadow-xl cursor-pointer"
                   >
                     <span>{slide.btn1Text}</span>
                     <ArrowRight className="w-4 h-4" />
@@ -165,14 +162,14 @@ export const Hero: React.FC<HeroProps> = () => {
                 {slide.btn2Action ? (
                   <button
                     onClick={slide.btn2Action}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#F7F3EC] border border-[#F7F3EC]/40 hover:border-[#A77B42] hover:bg-[#A77B42]/20 transition-all duration-300 backdrop-blur-xs cursor-pointer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#F7F3EC] border border-[#F7F3EC]/40 hover:border-[#A77B42] hover:bg-[#A77B42]/20 transition-all duration-300 backdrop-blur-xs cursor-pointer"
                   >
                     <span>{slide.btn2Text}</span>
                   </button>
                 ) : slide.btn2Href ? (
                   <a
                     href={slide.btn2Href}
-                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#F7F3EC] border border-[#F7F3EC]/40 hover:border-[#A77B42] hover:bg-[#A77B42]/20 transition-all duration-300 backdrop-blur-xs cursor-pointer"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 sm:gap-3 px-6 sm:px-8 py-3.5 sm:py-4 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-[#F7F3EC] border border-[#F7F3EC]/40 hover:border-[#A77B42] hover:bg-[#A77B42]/20 transition-all duration-300 backdrop-blur-xs cursor-pointer"
                   >
                     <span>{slide.btn2Text}</span>
                   </a>
@@ -183,26 +180,26 @@ export const Hero: React.FC<HeroProps> = () => {
         })}
       </div>
 
-      {/* Manual Left Navigation Arrow */}
+      {/* Manual Left Navigation Arrow: sized and positioned safely */}
       <button
         onClick={prevSlide}
         aria-label="Previous slide"
-        className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-[#A77B42]/40 bg-[#271911]/60 text-[#EAE0D2] hover:bg-[#A77B42] hover:text-white hover:border-[#A77B42] backdrop-blur-xs flex items-center justify-center transition-all duration-300 cursor-pointer group"
+        className="absolute left-2 sm:left-6 md:left-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border border-[#A77B42]/40 bg-[#271911]/70 text-[#EAE0D2] hover:bg-[#A77B42] hover:text-white hover:border-[#A77B42] backdrop-blur-xs flex items-center justify-center transition-all duration-300 cursor-pointer group shadow-lg"
       >
-        <ChevronLeft className="w-6 h-6 transition-transform group-hover:-translate-x-0.5" />
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:-translate-x-0.5" />
       </button>
 
-      {/* Manual Right Navigation Arrow */}
+      {/* Manual Right Navigation Arrow: sized and positioned safely */}
       <button
         onClick={nextSlide}
         aria-label="Next slide"
-        className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-[#A77B42]/40 bg-[#271911]/60 text-[#EAE0D2] hover:bg-[#A77B42] hover:text-white hover:border-[#A77B42] backdrop-blur-xs flex items-center justify-center transition-all duration-300 cursor-pointer group"
+        className="absolute right-2 sm:right-6 md:right-8 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-full border border-[#A77B42]/40 bg-[#271911]/70 text-[#EAE0D2] hover:bg-[#A77B42] hover:text-white hover:border-[#A77B42] backdrop-blur-xs flex items-center justify-center transition-all duration-300 cursor-pointer group shadow-lg"
       >
-        <ChevronRight className="w-6 h-6 transition-transform group-hover:translate-x-0.5" />
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 transition-transform group-hover:translate-x-0.5" />
       </button>
 
       {/* Three Slide Indicator Dots */}
-      <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+      <div className="absolute bottom-4 sm:bottom-7 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5 sm:gap-3">
         {slides.map((_, idx) => (
           <button
             key={idx}
@@ -210,8 +207,8 @@ export const Hero: React.FC<HeroProps> = () => {
             aria-label={`Go to slide ${idx + 1}`}
             className={`transition-all duration-300 cursor-pointer rounded-full ${
               idx === currentSlide
-                ? 'w-8 h-2 bg-[#C4975C]'
-                : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'
+                ? 'w-7 sm:w-8 h-2 bg-[#C4975C]'
+                : 'w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/40 hover:bg-white/70'
             }`}
           />
         ))}

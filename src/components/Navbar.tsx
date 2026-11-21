@@ -108,20 +108,20 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       {/* Top Utility Bar: Slim antique-gold / warm-brown strip */}
-      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-2 px-4 sm:px-6 lg:px-10 border-b border-[#A77B42]/25 relative z-50">
-        <div className="max-w-[1536px] mx-auto flex flex-wrap justify-between items-center gap-2 sm:gap-6 tracking-wider text-[11px] sm:text-xs">
+      <div className="bg-[#382419] text-[#F7F3EC] text-xs font-medium py-1.5 sm:py-2 px-3 sm:px-6 lg:px-10 border-b border-[#A77B42]/25 relative z-50 overflow-hidden">
+        <div className="max-w-[1536px] mx-auto flex flex-wrap justify-between items-center gap-1.5 sm:gap-6 tracking-wider text-[10px] sm:text-xs">
           
           {/* Highlight 1: Premium Wooden Handicrafts */}
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-            <span className="font-semibold uppercase tracking-widest text-[#F7F3EC]">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D4AF37] shrink-0" />
+            <span className="font-semibold uppercase tracking-widest text-[#F7F3EC] text-[10px] sm:text-xs">
               Premium Wooden Handicrafts
             </span>
           </div>
 
           {/* Highlight 2: Made in India */}
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-[#A77B42]/30 text-[10px] text-[#D4AF37] font-bold border border-[#A77B42]/60">
+          <div className="hidden xs:flex items-center gap-1.5 sm:gap-2">
+            <span className="inline-flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#A77B42]/30 text-[9px] sm:text-[10px] text-[#D4AF37] font-bold border border-[#A77B42]/60">
               🇮🇳
             </span>
             <span className="font-semibold tracking-wider text-[#F7F3EC]">
@@ -134,10 +134,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Highlight 3: Worldwide B2B & Export Enquiries */}
-          <div className="flex items-center gap-2">
-            <Globe className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
-            <span className="font-semibold tracking-wide text-[#F7F3EC]">
-              Worldwide B2B &amp; Export Enquiries
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#D4AF37] shrink-0" />
+            <span className="font-semibold tracking-wide text-[#F7F3EC] text-[10px] sm:text-xs">
+              B2B &amp; Export
             </span>
             <a
               href="#contact"
@@ -155,22 +155,23 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav
         className={`sticky top-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#F7F3EC]/95 backdrop-blur-md shadow-md py-3 sm:py-3.5 border-b border-[#EAE0D2]'
-            : 'bg-[#F7F3EC]/95 backdrop-blur-sm py-4 sm:py-5 border-b border-[#EAE0D2]/40'
+            ? 'bg-[#F7F3EC]/95 backdrop-blur-md shadow-md py-2 sm:py-3.5 border-b border-[#EAE0D2]'
+            : 'bg-[#F7F3EC]/95 backdrop-blur-sm py-2.5 sm:py-5 border-b border-[#EAE0D2]/40'
         }`}
       >
-        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-6 lg:px-10">
+          <div className="flex items-center justify-between gap-2">
+            
             {/* Logo on Left */}
             <a
               href="#home"
               onClick={handleHomeClick}
-              className="flex items-center gap-3 group shrink-0 py-0.5"
+              className="flex items-center gap-2 group shrink-0 py-0.5 max-w-[200px] xs:max-w-[240px] sm:max-w-[340px] md:max-w-[440px] lg:max-w-[500px]"
             >
               <img
                 src={logoLight}
                 alt="Shree Shiv Shakti Art - Wooden Handicrafts Manufacturing and Export House"
-                className="h-16 sm:h-20 md:h-[88px] lg:h-[92px] w-auto max-w-[300px] sm:max-w-[390px] md:max-w-[460px] lg:max-w-[500px] object-contain transition-transform duration-300 group-hover:scale-[1.01]"
+                className="h-10 xs:h-12 sm:h-16 md:h-[80px] lg:h-[92px] w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.01]"
               />
             </a>
 
@@ -194,78 +195,76 @@ export const Navbar: React.FC<NavbarProps> = ({
                   About Us
                 </a>
 
-                {/* =========================================================================
-                    Interactive Mega Menu for OUR COLLECTIONS
-                ========================================================================= */}
+                {/* Interactive Mega Menu for OUR COLLECTIONS */}
                 <div
-                  className="relative"
                   ref={navDropdownRef}
+                  className="relative group py-2"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
                   <button
                     onClick={handleAllCollectionsClick}
-                    className="text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors inline-flex items-center gap-1.5 xl:gap-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1.5px] after:bg-[#A77B42] hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 text-xs xl:text-[13px] uppercase font-medium tracking-[0.16em] xl:tracking-[0.18em] text-[#25221F] hover:text-[#A77B42] transition-colors cursor-pointer py-1"
                   >
                     <span>Our Collections</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#A77B42]' : 'text-[#7D6E63]'}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 text-[#A77B42] transition-transform duration-300 ${megaMenuOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                   {/* Mega Menu Dropdown */}
                   {megaMenuOpen && (
-                    <div
-                      className="absolute top-full -left-20 xl:-left-28 pt-3 w-[720px] xl:w-[820px] z-50 animate-fadeIn"
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <div className="bg-[#FAF7F2] border border-[#EAE0D2] shadow-2xl rounded-none p-5 backdrop-blur-md">
+                    <div className="absolute top-full -left-20 xl:-left-24 w-[760px] xl:w-[860px] bg-[#FAF7F2] border border-[#A77B42]/30 shadow-2xl p-6 z-50 animate-fade-in backdrop-blur-md">
+                      <div className="max-w-4xl mx-auto">
                         
-                        {/* Mega Menu Top Header */}
-                        <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#EAE0D2] text-[11px] uppercase tracking-widest">
-                          <span className="font-bold text-[#A77B42] flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5 text-[#A77B42]" />
-                            <span>Export Furniture Portfolios &amp; Subcategories</span>
-                          </span>
+                        <div className="flex items-center justify-between pb-3 mb-4 border-b border-[#EAE0D2]">
+                          <div className="flex items-center gap-2">
+                            <span className="w-4 h-[1.5px] bg-[#A77B42]"></span>
+                            <span className="text-xs uppercase font-bold tracking-[0.2em] text-[#A77B42]">
+                              SSSA Master Portfolios
+                            </span>
+                          </div>
                           <button
                             onClick={handleAllCollectionsClick}
-                            className="font-semibold text-[#382419] hover:text-[#A77B42] flex items-center gap-1 cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#382419] hover:text-[#A77B42] transition-colors cursor-pointer"
                           >
-                            <span>Explore Full Catalogue</span>
+                            <span>Explore All Categories</span>
                             <ArrowUpRight className="w-3.5 h-3.5" />
                           </button>
                         </div>
 
-                        {/* Two-Column Interactive Mega Layout */}
+                        {/* 2-Column Mega Menu Content */}
                         <div className="grid grid-cols-12 gap-6">
                           
-                          {/* Left Column: 6 Main Categories (Hover changes subcategory pane, click navigates to category page) */}
+                          {/* Left Column: 6 Categories List */}
                           <div className="col-span-5 border-r border-[#EAE0D2] pr-4 space-y-1">
-                            <div className="text-[10px] uppercase font-bold text-[#7D6E63] tracking-widest px-3 mb-2">
-                              Main Categories
-                            </div>
-                            {collectionsData.map((cat) => {
-                              const isHovered = activeHoverCategory.id === cat.id;
+                            {collectionsData.map((category) => {
+                              const isHovered = activeHoverCategory.id === category.id;
                               return (
                                 <div
-                                  key={cat.id}
-                                  onMouseEnter={() => setActiveHoverCategory(cat)}
-                                  className={`flex items-center justify-between px-3 py-2.5 transition-all cursor-pointer rounded-none group ${
-                                    isHovered ? 'bg-[#382419] text-[#F7F3EC]' : 'hover:bg-[#F3ECE1] text-[#25221F]'
+                                  key={category.id}
+                                  onMouseEnter={() => setActiveHoverCategory(category)}
+                                  onClick={(e) => handleCategoryNavClick(category.slug, e)}
+                                  className={`group/cat flex items-center justify-between p-2.5 rounded-xs transition-all cursor-pointer ${
+                                    isHovered
+                                      ? 'bg-[#382419] text-[#F7F3EC] shadow-sm'
+                                      : 'hover:bg-[#EAE0D2]/50 text-[#25221F]'
                                   }`}
                                 >
-                                  {/* Clicking category navigates to that category page */}
-                                  <button
-                                    onClick={(e) => handleCategoryNavClick(cat.slug, e)}
-                                    className="text-left flex-grow font-serif text-[13.5px] font-semibold tracking-wide cursor-pointer"
-                                  >
-                                    {cat.title}
-                                  </button>
-                                  <div className="flex items-center gap-1.5 shrink-0">
-                                    <span className={`text-[10px] ${isHovered ? 'text-[#D4AF37]' : 'text-[#7D6E63]'}`}>
-                                      {cat.subcategories.length}
-                                    </span>
-                                    <ChevronRight className={`w-3.5 h-3.5 ${isHovered ? 'text-[#D4AF37] translate-x-0.5' : 'text-[#7D6E63]'} transition-transform`} />
+                                  <div className="flex items-center gap-3">
+                                    <img
+                                      src={category.image}
+                                      alt={category.title}
+                                      className="w-9 h-9 object-cover rounded-xs border border-[#A77B42]/40"
+                                    />
+                                    <div>
+                                      <div className={`text-xs font-serif font-bold tracking-wide ${isHovered ? 'text-white' : 'text-[#382419]'}`}>
+                                        {category.title}
+                                      </div>
+                                      <div className={`text-[10px] ${isHovered ? 'text-[#EAE0D2]/80' : 'text-[#7D6E63]'}`}>
+                                        {category.subcategories.length} subcategories
+                                      </div>
+                                    </div>
                                   </div>
+                                  <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isHovered ? 'text-[#C4975C] translate-x-1' : 'text-[#A77B42]'}`} />
                                 </div>
                               );
                             })}
@@ -367,21 +366,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Mobile / Tablet Menu Controls */}
-            <div className="lg:hidden flex items-center gap-2.5">
+            <div className="lg:hidden flex items-center gap-2 shrink-0">
               <button
                 onClick={() => openWhatsAppEnquiry()}
-                className="sm:hidden text-xs uppercase tracking-wider font-semibold px-3 py-1.5 bg-[#382419] text-white"
+                className="text-[11px] sm:text-xs uppercase tracking-wider font-semibold px-2.5 sm:px-3 py-1.5 bg-[#382419] text-white hover:bg-[#A77B42] transition-colors shrink-0"
               >
                 Enquire
               </button>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-[#382419] hover:text-[#A77B42] transition-colors focus:outline-none cursor-pointer"
+                className="p-1.5 text-[#382419] hover:text-[#A77B42] transition-colors focus:outline-none cursor-pointer shrink-0"
                 aria-label="Toggle menu"
               >
                 {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
+
           </div>
         </div>
 
