@@ -216,29 +216,28 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         uploadFormData.append('images', file);
       });
 
-      let uploadedUrls: string[] = [];
+      // Send images to backend media upload endpoint
+      const res = await fetch(`${apiUrl}/api/media/upload`, {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: uploadFormData,
+      });
 
-      try {
-        const res = await fetch(`${apiUrl}/api/media/upload`, {
-          method: 'POST',
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          body: uploadFormData,
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          if (data.media && Array.isArray(data.media)) {
-            uploadedUrls = data.media.map((item: any) => item.url);
-          }
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        if (res.status === 401 || res.status === 403) {
+          throw new Error(errData.message || 'Authentication error (403/401). Please re-login to upload images.');
+        } else {
+          throw new Error(errData.message || `Image upload failed (HTTP ${res.status}). Please verify Cloudinary configuration.`);
         }
-      } catch (networkErr) {
-        console.warn('Backend upload endpoint unreachable, falling back to persistent data storage', networkErr);
       }
 
-      // If backend was unreachable or returned non-200 (e.g. storage disabled/offline), compress and convert to persistent Base64 data URLs
-      if (uploadedUrls.length === 0) {
-        uploadedUrls = await Promise.all(selectedFiles.map((file) => compressImageFile(file)));
+      const data = await res.json();
+      if (!data.media || !Array.isArray(data.media) || data.media.length === 0) {
+        throw new Error('Upload succeeded on server but returned no image URLs.');
       }
+
+      const uploadedUrls: string[] = data.media.map((item: any) => item.url);
 
       // Assign uploaded images:
       // If user clicked "Replace Primary" or no primary image exists, the first uploaded image replaces primary!

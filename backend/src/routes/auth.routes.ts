@@ -8,10 +8,10 @@ import { authenticateToken, AuthRequest } from '../middleware/auth.middleware.js
 
 const router = Router();
 
-// Rate limiter for login attempts (10 requests per 15 mins)
+// Rate limiter for login attempts (50 requests per 15 mins)
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 50,
   message: { message: 'Too many login attempts. Please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,

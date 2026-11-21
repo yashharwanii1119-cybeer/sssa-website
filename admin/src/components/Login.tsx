@@ -32,28 +32,18 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         localStorage.setItem('sssa_admin_user', JSON.stringify(data.user));
         onLoginSuccess(data.user);
         return;
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        setError(errData.message || 'Invalid administrator email or password.');
+        setLoading(false);
+        return;
       }
-    } catch (err) {
-      console.warn('Backend login request error, checking local administrator credentials', err);
+    } catch (err: any) {
+      console.error('Backend login connection error:', err);
+      setError('Unable to reach authentication server. Please check your network connection.');
+      setLoading(false);
+      return;
     }
-
-    // Secure fallback verification
-    if (email.toLowerCase() === 'admin@shreeshivshaktiart.com' && password === 'Sssa@Admin2026') {
-      const fallbackToken =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdhZGExMzRiLTljYWUtNDZiNS04OTMwLTU3ZTBiOWZjZDg4NiIsImVtYWlsIjoiYWRtaW5Ac2hyZWVzaGl2c2hha3RpYXJ0LmNvbSIsInJvbGUiOiJTVVBFUkFETUlOIiwibmFtZSI6IlNocmVlIFNoaXYgU2hha3RpIEFydCBBZG1pbiIsImlhdCI6MTc5NTE3NjYxNSwiZXhwIjoxNzk3NzY4NjE1fQ.xQfy3_EsS2Yd-R1k2vORRZCuoylVI5QZXx7ntBZO_ls';
-      const user: User = {
-        id: '7ada134b-9cae-46b5-8930-57e0b9fcd886',
-        name: 'Shree Shiv Shakti Art Admin',
-        email: 'admin@shreeshivshaktiart.com',
-        role: 'SUPERADMIN',
-      };
-      localStorage.setItem('sssa_admin_token', fallbackToken);
-      localStorage.setItem('sssa_admin_user', JSON.stringify(user));
-      onLoginSuccess(user);
-    } else {
-      setError('Invalid credentials. Please enter authorized administrator details.');
-    }
-    setLoading(false);
   };
 
   return (

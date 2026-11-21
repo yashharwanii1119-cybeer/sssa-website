@@ -11,8 +11,17 @@ import { adminApiService } from './services/api';
 
 export function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('sssa_admin_user');
-    return saved ? JSON.parse(saved) : defaultUser; // Start logged-in with default user in development
+    const savedUser = localStorage.getItem('sssa_admin_user');
+    const savedToken = localStorage.getItem('sssa_admin_token');
+    // Only consider authenticated if a token is present
+    if (savedUser && savedToken) {
+      try {
+        return JSON.parse(savedUser);
+      } catch {
+        return null;
+      }
+    }
+    return null;
   });
 
   const [activeTab, setActiveTab] = useState<string>('dashboard');
@@ -50,6 +59,13 @@ export function App() {
       .catch((err) => {
         if (isMounted) {
           console.warn('Could not fetch products from API, checking local backup:', err);
+          if (err.message && (err.message.includes('401') || err.message.includes('403') || err.message.includes('Forbidden') || err.message.includes('Unauthorized'))) {
+            // Token is invalid or expired - force re-login to acquire a fresh JWT
+            localStorage.removeItem('sssa_admin_token');
+            localStorage.removeItem('sssa_admin_user');
+            setCurrentUser(null);
+            return;
+          }
           setApiError('Unable to connect to live database. Please check your connection.');
           const saved = localStorage.getItem('sssa_admin_products');
           if (saved) {

@@ -17,7 +17,7 @@ export const adminApiService = {
       headers: getAuthHeaders(),
     });
     if (!res.ok) {
-      throw new Error(`Failed to load categories: ${res.statusText}`);
+      throw new Error(`Failed to load categories: ${res.status} ${res.statusText}`);
     }
     return res.json();
   },
@@ -41,7 +41,7 @@ export const adminApiService = {
       headers: getAuthHeaders(),
     });
     if (!res.ok) {
-      throw new Error(`Failed to load products: ${res.statusText}`);
+      throw new Error(`Failed to load products: ${res.status} ${res.statusText}`);
     }
     return res.json();
   },
