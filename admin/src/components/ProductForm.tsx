@@ -53,11 +53,38 @@ export const ProductForm: React.FC<ProductFormProps> = ({
     initialProduct?.images || []
   );
 
+  // Sync state when initialProduct prop changes (e.g. switching between products to edit)
+  useEffect(() => {
+    if (initialProduct) {
+      setFormData({
+        name: initialProduct.name || '',
+        sku: initialProduct.sku || '',
+        categoryId: initialProduct.categoryId || categories[0]?.id || '',
+        subcategoryId: initialProduct.subcategoryId || categories[0]?.subcategories[0]?.id || '',
+        status: initialProduct.status || 'DRAFT',
+        isFeatured: initialProduct.isFeatured || false,
+        shortDescription: initialProduct.shortDescription || '',
+        description: initialProduct.description || '',
+        material: initialProduct.material || 'Solid Mango Wood & Brass Hardware',
+        woodType: initialProduct.woodType || 'Mango Wood',
+        finish: initialProduct.finish || 'Hand-Rubbed Walnut Patina',
+        colour: initialProduct.colour || 'Walnut Brown',
+        dimensions: initialProduct.dimensions || '',
+        weight: initialProduct.weight || '',
+        customizationAvailable: initialProduct.customizationAvailable ?? true,
+        mainImage: initialProduct.mainImage || '',
+        tags: initialProduct.tags?.join(', ') || '',
+      });
+      setGalleryImages(initialProduct.images || []);
+    }
+  }, [initialProduct, categories]);
+
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [isReplacingMain, setIsReplacingMain] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Dynamically update subcategories when main category changes
@@ -109,6 +136,48 @@ export const ProductForm: React.FC<ProductFormProps> = ({
 
   const handleRemoveGalleryImage = (id: string) => {
     setGalleryImages((prev) => prev.filter((img) => img.id !== id));
+  };
+
+  // Compress and read image file to high-efficiency JPEG data URL
+  const compressImageFile = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (readerEvent) => {
+        const img = new Image();
+        img.onload = () => {
+          const maxDim = 1200;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            resolve(readerEvent.target?.result as string);
+            return;
+          }
+          ctx.drawImage(img, 0, 0, width, height);
+          // Export as optimized JPEG at 82% quality (yielding ~100-250KB for pristine clarity)
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          resolve(compressedDataUrl);
+        };
+        img.onerror = reject;
+        img.src = readerEvent.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleDeviceFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,34 +235,36 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         console.warn('Backend upload endpoint unreachable, falling back to persistent data storage', networkErr);
       }
 
-      // If backend was unreachable or returned non-200 (e.g. offline dev), convert files to persistent Base64 data URLs
+      // If backend was unreachable or returned non-200 (e.g. storage disabled/offline), compress and convert to persistent Base64 data URLs
       if (uploadedUrls.length === 0) {
-        const base64Promises = selectedFiles.map((file) => {
-          return new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-          });
-        });
-        uploadedUrls = await Promise.all(base64Promises);
+        uploadedUrls = await Promise.all(selectedFiles.map((file) => compressImageFile(file)));
       }
 
-      // Assign uploaded images to primary and gallery
+      // Assign uploaded images:
+      // If user clicked "Replace Primary" or no primary image exists, the first uploaded image replaces primary!
       let currentMain = formData.mainImage;
       const newGalleryItems: ProductImage[] = [];
 
-      uploadedUrls.forEach((url, idx) => {
-        if (!currentMain) {
-          currentMain = url;
-        } else {
+      if (isReplacingMain || !currentMain) {
+        currentMain = uploadedUrls[0];
+        // Any additional files go to gallery
+        uploadedUrls.slice(1).forEach((url, idx) => {
           newGalleryItems.push({
             id: `img-${Date.now()}-${idx}`,
             url,
             order: galleryImages.length + newGalleryItems.length,
           });
-        }
-      });
+        });
+      } else {
+        // Appending to existing images
+        uploadedUrls.forEach((url, idx) => {
+          newGalleryItems.push({
+            id: `img-${Date.now()}-${idx}`,
+            url,
+            order: galleryImages.length + newGalleryItems.length,
+          });
+        });
+      }
 
       setFormData((prev) => ({ ...prev, mainImage: currentMain }));
       if (newGalleryItems.length > 0) {
@@ -204,6 +275,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       setUploadError(err.message || 'Failed to upload image. Please try again.');
     } finally {
       setIsUploading(false);
+      setIsReplacingMain(false);
       // Reset input value so same files can be re-selected if desired
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -697,7 +769,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                   </span>
                   <button
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
+                    onClick={() => {
+                      setIsReplacingMain(true);
+                      fileInputRef.current?.click();
+                    }}
                     disabled={isUploading}
                     className="absolute bottom-2 right-2 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1E140E]/85 hover:bg-[#1E140E] text-[#EAE0D2] rounded-md text-xs font-semibold backdrop-blur-xs transition-colors cursor-pointer shadow-md"
                     title="Replace with image from device"
