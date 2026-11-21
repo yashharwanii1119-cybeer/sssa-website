@@ -4,6 +4,7 @@ import { collectionsData } from '../data/collections';
 import { productsData, ProductItem } from '../data/products';
 import { openWhatsAppEnquiry } from '../utils/whatsapp';
 import { storefrontApiService } from '../services/storefrontApi';
+import { getAssetPath } from '../utils/paths';
 
 interface AllCollectionsPageProps {
   onBackToHome: () => void;
@@ -524,6 +525,12 @@ export const AllCollectionsPage: React.FC<AllCollectionsPageProps> = ({
                     <img
                       src={product.image}
                       alt={product.name}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (!target.src.includes('furniture.jpg')) {
+                          target.src = getAssetPath('/images/furniture.jpg');
+                        }
+                      }}
                       className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-108"
                       loading="lazy"
                     />

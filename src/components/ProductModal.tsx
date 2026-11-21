@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Mail } from 'lucide-react';
 import { ProductItem } from '../data/products';
 import { openWhatsAppEnquiry } from '../utils/whatsapp';
+import { getAssetPath } from '../utils/paths';
 
 interface ProductModalProps {
   product: ProductItem | null;
@@ -41,6 +42,12 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             <img
               src={product.image}
               alt={product.name}
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('furniture.jpg')) {
+                  target.src = getAssetPath('/images/furniture.jpg');
+                }
+              }}
               className="w-full h-full object-cover"
             />
             <div className="absolute bottom-3 left-3 bg-[#382419]/90 text-white text-[10px] uppercase tracking-widest px-2.5 py-1">

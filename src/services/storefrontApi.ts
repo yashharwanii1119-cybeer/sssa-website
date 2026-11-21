@@ -1,6 +1,24 @@
 import { ProductItem, productsData } from '../data/products';
+import { getAssetPath } from '../utils/paths';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://sssa-website.onrender.com';
+
+// Resolve image URL ensuring GitHub Pages subpaths, external URLs, and Base64 strings all render properly
+export const resolveProductImageUrl = (url?: string): string => {
+  if (!url || typeof url !== 'string') {
+    return getAssetPath('/images/furniture.jpg');
+  }
+  // 1. Base64 data URLs - render directly
+  if (url.startsWith('data:image/')) {
+    return url;
+  }
+  // 2. Absolute external URLs - render directly
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  // 3. Local relative paths (e.g. /images/sub_cabinets.jpg) - resolve via getAssetPath for GitHub Pages
+  return getAssetPath(url);
+};
 
 export const storefrontApiService = {
   // Fetch published products from Neon DB with fallback to base curated catalog
@@ -26,7 +44,11 @@ export const storefrontApiService = {
 
       if (res.ok) {
         const data = await res.json();
-        const apiProducts: ProductItem[] = data.products || [];
+        const apiProducts: ProductItem[] = (data.products || []).map((p: any) => ({
+          ...p,
+          image: resolveProductImageUrl(p.image),
+          gallery: Array.isArray(p.gallery) ? p.gallery.map((g: string) => resolveProductImageUrl(g)) : [],
+        }));
 
         // Deduplication & Priority Merge:
         // Live products from Neon DB are the absolute source of truth.
