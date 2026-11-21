@@ -211,35 +211,43 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       const apiUrl = import.meta.env.VITE_API_URL || 'https://sssa-website.onrender.com';
       const token = localStorage.getItem('sssa_admin_token') || '';
 
-      const uploadFormData = new FormData();
-      selectedFiles.forEach((file) => {
-        uploadFormData.append('images', file);
-      });
+      // 1. Client-side compression using HTML5 Canvas (max 1200px, JPEG 0.82)
+      const compressedDataUrls = await Promise.all(
+        selectedFiles.map((file) => compressImageFile(file))
+      );
 
-      // Send images to backend media upload endpoint
+      // 2. Send compressed image payloads to backend validation endpoint
       const res = await fetch(`${apiUrl}/api/media/upload`, {
         method: 'POST',
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        body: uploadFormData,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          images: compressedDataUrls.map((data, idx) => ({
+            data,
+            filename: selectedFiles[idx]?.name || `upload-${idx}.jpg`,
+          })),
+        }),
       });
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         if (res.status === 401 || res.status === 403) {
-          throw new Error(errData.message || 'Authentication error (403/401). Please re-login to upload images.');
+          throw new Error('Authentication expired. Please log in again to save images.');
         } else {
-          throw new Error(errData.message || `Image upload failed (HTTP ${res.status}). Please verify Cloudinary configuration.`);
+          throw new Error(errData.message || `Image upload validation failed (HTTP ${res.status}).`);
         }
       }
 
       const data = await res.json();
       if (!data.media || !Array.isArray(data.media) || data.media.length === 0) {
-        throw new Error('Upload succeeded on server but returned no image URLs.');
+        throw new Error('Upload validation succeeded but returned no image data.');
       }
 
       const uploadedUrls: string[] = data.media.map((item: any) => item.url);
 
-      // Assign uploaded images:
+      // 3. Assign uploaded images:
       // If user clicked "Replace Primary" or no primary image exists, the first uploaded image replaces primary!
       let currentMain = formData.mainImage;
       const newGalleryItems: ProductImage[] = [];
