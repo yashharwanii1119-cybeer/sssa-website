@@ -98,22 +98,101 @@ export const About: React.FC<AboutProps> = () => {
             </div>
           </div>
 
-          {/* Right Column: High-quality photograph of traditional artisan in real woodworking workshop */}
+          {/* Right Column: Reference 3 Asymmetrical Two-Column 5-Image Furniture Collage */}
           <div className="lg:col-span-6">
             <div className="relative mx-auto max-w-lg lg:max-w-none group">
-              <div className="relative overflow-hidden rounded-xl shadow-2xl border border-[#EAE0D2]">
-                <img
-                  src={getAssetPath("/images/about_artisan_hero.jpg")}
-                  alt="Traditional Indian artisan working on wooden furniture in a woodworking workshop"
-                  className="w-full h-[460px] sm:h-[540px] object-cover object-center transition-transform duration-700 ease-out group-hover:scale-103"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#271911]/80 via-[#271911]/20 to-transparent pointer-events-none" />
+              <div className="relative overflow-hidden rounded-2xl shadow-2xl border border-[#EAE0D2] bg-[#F3ECE1]/60 p-3 sm:p-4">
                 
+                {/* Asymmetrical 2-Column Grid matching Reference 3 */}
+                <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 items-stretch min-h-[460px] sm:min-h-[520px]">
+                  
+                  {/* Column 1: Larger Tall Top Panel + Rectangular Bottom Panel */}
+                  <div className="flex flex-col gap-2.5 sm:gap-3.5 justify-between">
+                    {/* Top-Left: Round Stone Pedestal Table (Taller Dominant Panel) */}
+                    <div className="group/panel relative overflow-hidden rounded-xl border border-[#A77B42]/30 bg-[#271911] shadow-md transition-all duration-300 hover:border-[#C4975C] hover:shadow-xl flex-1 min-h-[220px] sm:min-h-[270px]">
+                      <img
+                        src={getAssetPath("/images/about/hero_round_table.jpg")}
+                        alt="Handcrafted Round Stone Pedestal Dining Table"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover/panel:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end p-2.5 sm:p-3">
+                        <span className="text-[10px] sm:text-xs font-medium text-[#F7F3EC] tracking-wide">
+                          Pedestal Dining
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom-Left: Double Arch Console Table (Rectangular Panel) */}
+                    <div className="group/panel relative overflow-hidden rounded-xl border border-[#A77B42]/30 bg-[#271911] shadow-md transition-all duration-300 hover:border-[#C4975C] hover:shadow-xl h-[160px] sm:h-[190px]">
+                      <img
+                        src={getAssetPath("/images/about/hero_arch_console.jpg")}
+                        alt="Dual Arch Sculptural Console Table"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover/panel:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end p-2.5 sm:p-3">
+                        <span className="text-[10px] sm:text-xs font-medium text-[#F7F3EC] tracking-wide">
+                          Arch Console
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Column 2: Top Rectangular Panel + Compact Mid Panel + Larger Bottom Panel */}
+                  <div className="flex flex-col gap-2.5 sm:gap-3.5 justify-between">
+                    {/* Top-Right: Fluted Oval Dining Table */}
+                    <div className="group/panel relative overflow-hidden rounded-xl border border-[#A77B42]/30 bg-[#271911] shadow-md transition-all duration-300 hover:border-[#C4975C] hover:shadow-xl h-[140px] sm:h-[165px]">
+                      <img
+                        src={getAssetPath("/images/about/hero_oval_dining.jpg")}
+                        alt="Handcrafted Fluted Oval Dining Table"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover/panel:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end p-2.5 sm:p-3">
+                        <span className="text-[10px] sm:text-xs font-medium text-[#F7F3EC] tracking-wide">
+                          Fluted Oval Table
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Mid-Right: Dual-Drawer Artisan End Cabinet */}
+                    <div className="group/panel relative overflow-hidden rounded-xl border border-[#A77B42]/30 bg-[#271911] shadow-md transition-all duration-300 hover:border-[#C4975C] hover:shadow-xl h-[120px] sm:h-[140px]">
+                      <img
+                        src={getAssetPath("/images/about/hero_drawer_cabinet.jpg")}
+                        alt="Handcrafted Two-Drawer Bedside Cabinet"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover/panel:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end p-2.5 sm:p-3">
+                        <span className="text-[10px] sm:text-xs font-medium text-[#F7F3EC] tracking-wide">
+                          Artisan End Cabinet
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Bottom-Right: Curved Media Credenza (Taller Accent Panel) */}
+                    <div className="group/panel relative overflow-hidden rounded-xl border border-[#A77B42]/30 bg-[#271911] shadow-md transition-all duration-300 hover:border-[#C4975C] hover:shadow-xl flex-1 min-h-[140px] sm:min-h-[165px]">
+                      <img
+                        src={getAssetPath("/images/about/hero_media_credenza.jpg")}
+                        alt="Artisanal Curved Wood Media Credenza"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover/panel:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover/panel:opacity-100 transition-opacity duration-300 pointer-events-none flex items-end p-2.5 sm:p-3">
+                        <span className="text-[10px] sm:text-xs font-medium text-[#F7F3EC] tracking-wide">
+                          Curved Credenza
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
                 {/* Floating Artisan Badge */}
-                <div className="absolute bottom-6 left-6 right-6 p-5 bg-[#FAF7F2]/95 backdrop-blur-md border border-[#EAE0D2] rounded-lg shadow-lg">
+                <div className="mt-3.5 p-4 sm:p-4.5 bg-[#FAF7F2]/95 backdrop-blur-md border border-[#EAE0D2] rounded-xl shadow-lg">
                   <div className="flex items-center gap-3.5">
-                    <img src={emblem} alt="SSSA Emblem" className="w-9 h-9 object-contain" />
+                    <img src={emblem} alt="SSSA Emblem" className="w-8 sm:w-9 h-8 sm:h-9 object-contain" />
                     <div>
                       <h4 className="text-xs uppercase font-bold tracking-widest text-[#382419]">
                         Generations of Woodworking Artistry
@@ -124,6 +203,7 @@ export const About: React.FC<AboutProps> = () => {
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
